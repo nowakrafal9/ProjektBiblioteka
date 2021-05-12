@@ -20,7 +20,7 @@ Sekcja ***"Book info"*** w bazie danych przechowuje informacje o książkach. Ma
 -- ***"author info"*** - tabela zawierająca informacje o autorze - jego nazwisko i imie oraz 6 znakowy kod identyfikujący go w systemie (3 pierwsze litery imienia i nazwiska) \
 -- ***"genre"*** - tabela zawierająca nazwy gatunków książek \
 -- ***"publisher"*** - tabela zawierająca nazwy wydawców których książki znajdują się w bibliotece \
--- ***"book info"*** - tabela zawierająca informacje o poszczególnych tytułach występujących w bibliotece \
+-- ***"book info"*** - tabela zawierająca informacje o poszczególnych tytułach występujących w bibliotece
 
 Sekcja ***"Borrower info"*** w bazie danych przechowuje informacje o czytelnikach zarejestrowanych w bibliotece. Informacje tam zawarte są podstawowymi danymi kontaktowymi z czytelnikiem.
 
