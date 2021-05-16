@@ -19,7 +19,7 @@
             return !App::getMessages()->isError();
         }
      
-        public function action_bookInfo(){       
+        public function action_bookList(){       
             $this -> validate();
             
             $filter_params = [];
@@ -49,10 +49,10 @@
             App::getSmarty()->assign('searchForm', $this->book);
             App::getSmarty()->assign('records', $this->records);
             
-            App::getSmarty()->display('BookInfo.tpl');
+            App::getSmarty()->display('BookList.tpl');
         }
         
-        public function action_bookInfoDetails(){
+        public function action_bookInfo(){
             // Do zmodyfikowania dać JOIN)      
             $this->book->id_book = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
             
@@ -69,6 +69,6 @@
             
             //App::getSmarty()->assign('user', SessionUtils::loadData('user'));
             App::getSmarty()->assign('user',unserialize($_SESSION['user'])); 
-            App::getSmarty()->display('BookInfoDetails.tpl');
+            App::getSmarty()->display('BookInfo.tpl');
         }
     }

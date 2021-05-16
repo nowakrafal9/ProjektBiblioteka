@@ -11,7 +11,7 @@
                         </div>
                     </article>
 
-                    <article onclick="location='{$conf->action_url}bookInfo'" onmouseover="this.style.backgroundColor='#F4F4F4'" onmouseout="this.style.backgroundColor=''" style = "cursor: pointer; ">
+                    <article onclick="location='{$conf->action_url}bookList'" onmouseover="this.style.backgroundColor='#F4F4F4'" onmouseout="this.style.backgroundColor=''" style = "cursor: pointer; ">
                         <span class="icon solid fa-book-open"></span>
                         <div class="content">
                             <h3>Informacja o książkach</h3>

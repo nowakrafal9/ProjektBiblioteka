@@ -40,7 +40,7 @@
                         <ul>
                             <li><a href="{$conf->action_url}main">Strona główna</a></li>
                             <li><a href="{$conf->action_url}readerList">Lista czytelników</a></li>
-                            <li><a href="{$conf->action_url}bookInfo">Informacje o książce</a></li>
+                            <li><a href="{$conf->action_url}bookList">Informacje o książce</a></li>
                             <li><a href="{$conf->action_url}borrowedBooks">Wypożyczone książki</a></li>
                             <li><a href="{$conf->action_url}bookStock">Lista książek</a></li>   
                         </ul>

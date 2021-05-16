@@ -14,8 +14,8 @@ Utils::addRoute('logout', 'LoginCtrl');
 Utils::addRoute('readerList', 'ReaderListCtrl', ['Pracownik', "Administrator"]);
 Utils::addRoute('readerInfo', 'ReaderListCtrl', ['Pracownik', "Administrator"]);
 
+Utils::addRoute('bookList', 'BookInfoCtrl', ['Pracownik', "Administrator"]);
 Utils::addRoute('bookInfo', 'BookInfoCtrl', ['Pracownik', "Administrator"]);
-Utils::addRoute('bookInfoDetails', 'BookInfoCtrl', ['Pracownik', "Administrator"]);
 
 Utils::addRoute('bookStock', 'BookStockCtrl', ['Pracownik', "Administrator"]);
 
