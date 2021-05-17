@@ -2,7 +2,7 @@
 
 {block name=content}
     <section style="padding-top: 1em; padding-bottom: 1em">
-       {foreach $records as $r}
+       {foreach $records_1 as $r}
             <h3 class="content">{$r["name"]}, {$r["surname"]}  </h3>
             
             <h4>Miejsce zamieszkania:</h4>
@@ -17,8 +17,43 @@
                 Email: {if {$r["email"]} == ""}Brak{else}{$r["email"]}{/if} <br/>
             </p>
         {/foreach}
-       
-        <a href="{$conf->action_url}readerList" class="button primary">Powrót</a>
+    </section>
+        
+    <section style="padding-top: 1em; padding-bottom: 1em">
+        <h4>Wypożyczone książki:</h4>
+        
+        {if {$numRecords} > 0}
+        <table class="alt">
+            <thead>
+                <tr>
+                    <th style="width: 10%">Kod książki</th>
+                    <th style="width: 40%">Tytuł</th>
+                    <th style="width: 40%">Data zwrotu</th>         
+                </tr>
+            </thead>
+
+            {foreach $records_2 as $r}
+                {strip}
+                    <tr>
+                        <td style="width: 10%">{$r["book_code"]}</td> 
+                        <td style="width: 40%">{$r["title"]}</td>
+                        <td style="width: 40%">{$r["return_date"]}</td>  
+                        {if {$dateToday} > {$r["return_date"]}}
+                            <td style="width: 10%; background-color: #f56a6a;"><strong>Po terminie!</strong></td>
+                        {else}
+                            <td style="width: 10%">OK</td>
+                        {/if}    
+                    </tr>
+                {/strip}
+            {/foreach}
+        </table>
+        {else}
+            Brak wypożyczonych książek.
+        {/if}
+    </section>
+        
+    <section style="padding-top: 1em; padding-bottom: 1em">
+              <a href="{$conf->action_url}readerList" class="button primary">Powrót</a>
     </section>
 {/block}
 
