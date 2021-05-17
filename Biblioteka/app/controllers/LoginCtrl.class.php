@@ -12,6 +12,8 @@ use app\transfer\User;
 
 class LoginCtrl {
     private $form;
+    private $role;
+    private $pass;
     
     public function __construct() { $this->form = new LoginForm(); }
 
@@ -25,14 +27,9 @@ class LoginCtrl {
         if (empty($this->form->pass)) { Utils::addErrorMessage('Nie podano hasła'); }
 
         if (App::getMessages()->isError()) return false;
-           
-        $where["login"] = $this->form->login;
-        $record = App::getDB()->select("user", ["password", "role"], $where);
-        
-        foreach($record as $r){
-           $pass = $r["password"];
-           $role = $r["role"];
-        }
+              
+        $role = App::getDB()->get("user", "role", [ "login" => $this->form->login]);
+        $pass = App::getDB()->get("user", "password", [ "login" => $this->form->login]);
         
         if (isset($pass) && $this->form->pass == $pass) { 
             RoleUtils::addRole($role);
