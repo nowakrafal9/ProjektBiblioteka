@@ -8,7 +8,9 @@
   
     class ReaderListCtrl {
         private $reader;
-        private $records;
+        private $records_1;
+        private $records_2;
+        private $num_records = 0;
         
         public function __construct() { $this->reader = new ReaderListForm(); }
         
@@ -64,14 +66,29 @@
             
             $where['id_borrower'] = $this->reader->id; 
             try {
-                $this->records = App::getDB()->select("borrower_info", ["id_borrower", "name", "surname", "city" ,"address", "phone_number", "email"], $where);
+                $this->records_1 = App::getDB()->select("borrower_info", ["id_borrower", "name", "surname", "city" ,"address", "phone_number", "email"], $where);
             } catch (\PDOException $e) {
                 Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
                 if (App::getConf()->debug)
                     Utils::addErrorMessage($e->getMessage());
             }    
             
-            App::getSmarty()->assign('records', $this->records); 
+            try {
+                $this->records_2 = App::getDB()->select("borrowed_books", ["[><]book_stock" => ["book_code" => "book_code"]], ["borrowed_books.book_code", "borrowed_books.id_borrower", "borrowed_books.return_date", "book_stock.title"], $where);
+            } catch (\PDOException $e) {
+                Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
+                if (App::getConf()->debug)
+                    Utils::addErrorMessage($e->getMessage());
+            }    
+            
+            foreach($this->records_2 as $r){
+                $this->num_records++;      
+            }
+            
+            App::getSmarty()->assign('records_1', $this->records_1); 
+            App::getSmarty()->assign('records_2', $this->records_2);
+            App::getSmarty()->assign('numRecords', $this->num_records);
+            App::getSmarty()->assign('dateToday', date("Y-m-d"));
             
             //App::getSmarty()->assign('user', SessionUtils::loadData('user'));
             App::getSmarty()->assign('user',unserialize($_SESSION['user'])); 
