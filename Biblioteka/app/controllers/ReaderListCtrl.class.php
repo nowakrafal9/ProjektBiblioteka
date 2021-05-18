@@ -37,7 +37,7 @@
             
             // Set filter params
                 $filter_params = [];
-                if (isset($this->reader->id) && strlen($this->reader->id) > 0) {
+                if (isset($this->reader->id_reader) && strlen($this->reader->id_reader) > 0) {
                     $filter_params['id_borrower[~]'] = $this->reader->id_reader.'%';
                 }
                 if (isset($this->reader->name) && strlen($this->reader->name) > 0) {
