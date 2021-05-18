@@ -6,7 +6,7 @@
     use core\ParamUtils;
     
     class BorrowedBooksCtrl {
-        private $borrow;
+        private $borrowed;
         private $records;
         
         public function validate() {
@@ -17,10 +17,10 @@
         public function action_borrowedBooks(){ 
             $this->validate();
             
-            $where ["ORDER"] = ["book_code"];
+            $where ["ORDER"] = ["id_book"];
             
             try {
-            $this->records = App::getDB()->select("borrowed_books", [ "book_code", "id_borrower", "borrow_date", "return_date"], $where);
+            $this->records = App::getDB()->select("borrowed_books", [ "id_book", "id_borrower", "borrow_date", "return_date"], $where);
             } catch (\PDOException $e) {
                 Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
                 if (App::getConf()->debug)

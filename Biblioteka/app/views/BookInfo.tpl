@@ -10,13 +10,11 @@
                 Gatunek: {$r["genre"]} <br/>
                 Ilość stron: {$r["pages"]} <br/>
             </p>
-            
-            <p>
-                Placeholder na krótki opis książki.
-            </p>
-            
-            <a href="{$conf->action_url}bookList" class="button primary">Powrót</a>
         {/foreach}
+    </section> 
+    
+    <section style="padding-top: 1em; padding-bottom: 1em">
+        <a href="{$conf->action_url}bookList" class="button primary">Powrót</a>
     </section> 
 {/block}
 

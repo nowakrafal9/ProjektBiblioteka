@@ -37,7 +37,7 @@
             {foreach $records as $r}
             {strip}
                 <tr>
-                    <td style="width: 10%">{$r["book_code"]}</td> 
+                    <td style="width: 10%">{$r["id_book"]}</td> 
                     <td style="width: 10%">{$r["id_borrower"]}</td>
                     <td style="width: 15%">{$r["borrow_date"]}</td>   
                     <td style="width: 15%">{$r["return_date"]}</td> 

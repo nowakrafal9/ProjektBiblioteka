@@ -6,7 +6,7 @@
             
             <div class="row gtr-uniform" style="padding-bottom:0.75em">
                 <div class="col-3 col-5-xsmal">
-                    <input type="text" name="person_id" id="person_id" value="{$searchForm->id}" placeholder="Id czytelnika" />
+                    <input type="text" name="id_reader" id="id_reader" value="{$searchForm->id_reader}" placeholder="Id czytelnika" />
                 </div>	
                 <div class="col-3 col-5-xsmal">
                     <input type="text" name="name" id="name" value="{$searchForm->name}" placeholder="Imię" />
@@ -22,27 +22,32 @@
     </section>
     
     <section class="table-wrapper" style = "padding-top: 1em; padding-bottom: 1em">
-    <table class="alt">
-        <thead>
-            <tr>
-                <th style="width: 10%">Id czytelnika</th>
-                <th style="width: 40%">Nazwisko</th>
-                <th style="width: 40%">Imię</th>         
-            </tr>
-        </thead>
+        {if {$numRecords} > 0}
+            <table class="alt">
+                <thead>
+                    <tr>
+                        <th style="width: 10%">Id czytelnika</th>
+                        <th style="width: 40%">Nazwisko</th>
+                        <th style="width: 40%">Imię</th>  
+                        <th style="width: 10%"> </th>
+                    </tr>
+                </thead>
 
-        <tbody>
-            {foreach $records as $r}
-            {strip}
-                <tr>
-                    <td style="width: 10%">{$r["id_borrower"]}</td> 
-                    <td style="width: 40%">{$r["surname"]}</td>
-                    <td style="width: 40%">{$r["name"]}</td>      
-                    <td style="width: 10%" ><center><a href="{$conf->action_url}readerInfo/{$r['id_borrower']}" class="button small">Informacje</a></center></td>  
-                </tr>
-            {/strip}
-            {/foreach}
-        </tbody>
-    </table>
+                <tbody>
+                    {foreach $records as $r}
+                    {strip}
+                        <tr>
+                            <td style="width: 10%">{$r["id_borrower"]}</td> 
+                            <td style="width: 40%">{$r["surname"]}</td>
+                            <td style="width: 40%">{$r["name"]}</td>      
+                            <td style="width: 10%" ><center><a href="{$conf->action_url}readerInfo/{$r['id_borrower']}" class="button small">Informacje</a></center></td>  
+                        </tr>
+                    {/strip}
+                    {/foreach}
+                </tbody>
+            </table>
+        {else}
+            <h4>Brak zarejestrowanych czytelników.</h4>
+        {/if}
     </section>
 {/block}

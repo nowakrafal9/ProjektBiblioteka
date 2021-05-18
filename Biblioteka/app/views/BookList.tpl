@@ -16,17 +16,21 @@
     </section>
     
     <section class="table-wrapper" style = "padding-top: 1em; padding-bottom: 1em">
-    <table class="default">
-        <tbody>
-            {foreach $records as $r}
-            {strip}
-                <tr>
-                    <td>{$r["title"]}</td>
-                    <td><center><a href="{$conf->action_url}bookInfo/{$r['id_book']}" class="button small">Informacje</a></center></td>
-                </tr>
-            {/strip}
-            {/foreach}
-        </tbody>
-    </table>
+        {if {$numRecords} > 0}
+            <table class="default">
+                <tbody>
+                    {foreach $records as $r}
+                    {strip}
+                        <tr>
+                            <td style="width: 90%">{$r["title"]}</td>
+                            <td style="width: 10%"><center><a href="{$conf->action_url}bookInfo/{$r['id_book']}" class="button small">Informacje</a></center></td>
+                        </tr>
+                    {/strip}
+                    {/foreach}
+                </tbody>
+            </table>
+        {else}
+            <h4>Brak tytułów w bibliotece.</h4>
+        {/if}
     </section>
 {/block}

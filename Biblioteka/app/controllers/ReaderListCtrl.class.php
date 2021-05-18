@@ -4,94 +4,127 @@
     use core\App;
     use core\Utils;
     use core\ParamUtils;
+    use core\SessionUtils;
+    
     use app\forms\ReaderListForm;
   
     class ReaderListCtrl {
         private $reader;
-        private $records_1;
-        private $records_2;
-        private $num_records = 0;
+        private $records;
+        private $numRecords;
         
         public function __construct() { $this->reader = new ReaderListForm(); }
         
-        public function validate() {
-            $this->reader->id = ParamUtils::getFromRequest('person_id');
-            $this->reader->name = ParamUtils::getFromRequest('name');
-            $this->reader->surname = ParamUtils::getFromRequest('surname');
+        public function validateList() {
+            // Get from HTML 
+                $this->reader->id_reader = ParamUtils::getFromRequest('id_reader');
+                $this->reader->name = ParamUtils::getFromRequest('name');
+                $this->reader->surname = ParamUtils::getFromRequest('surname');
+
+            return !App::getMessages()->isError();
+        }   
+        
+        public function validateInfo() {
+            // Get id from URL
+                $this->reader->id_reader = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
 
             return !App::getMessages()->isError();
         }   
         
         public function action_readerList(){
-            $this->validate();
+            // Get params
+                $this->validateList();
             
-            $filter_params = [];
-            if (isset($this->reader->id) && strlen($this->reader->id) > 0) {
-                $filter_params['id_borrower[~]'] = $this->reader->id.'%';
-            }
-            if (isset($this->reader->name) && strlen($this->reader->name) > 0) {
-                $filter_params['name[~]'] = $this->reader->name.'%';
-            }
-            if (isset($this->reader->surname) && strlen($this->reader->surname) > 0) {
-                $filter_params['surname[~]'] = $this->reader->surname.'%';
-            }
+            // Set filter params
+                $filter_params = [];
+                if (isset($this->reader->id) && strlen($this->reader->id) > 0) {
+                    $filter_params['id_borrower[~]'] = $this->reader->id_reader.'%';
+                }
+                if (isset($this->reader->name) && strlen($this->reader->name) > 0) {
+                    $filter_params['name[~]'] = $this->reader->name.'%';
+                }
+                if (isset($this->reader->surname) && strlen($this->reader->surname) > 0) {
+                    $filter_params['surname[~]'] = $this->reader->surname.'%';
+                }
             
-            $num_params = sizeof($filter_params);
-            if ($num_params > 1) {
-                $where = ["AND" => &$filter_params];
-            } else {
-                $where = &$filter_params;
-            }
-            $where ["ORDER"] = ["surname","name"];
+            // Prepare $where for DB operation
+                $num_params = sizeof($filter_params);
+                if ($num_params > 1) {
+                    $where = ["AND" => &$filter_params];
+                } else {
+                    $where = &$filter_params;
+                }
+                $where ["ORDER"] = ["surname","name"];
             
-            try {
-            $this->records = App::getDB()->select("borrower_info", [ "id_borrower", "name", "surname"], $where);
-            } catch (\PDOException $e) {
-                Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-                if (App::getConf()->debug)
-                    Utils::addErrorMessage($e->getMessage());
-            }
+            // Get readers list
+                try {
+                $this->records = App::getDB()->select("borrower_info", [ "id_borrower", "name", "surname"], $where);
+                } catch (\PDOException $e) {
+                    Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
+                    if (App::getConf()->debug)
+                        Utils::addErrorMessage($e->getMessage());
+                }
+                App::getSmarty()->assign('records', $this->records);
+                
+            // Get number of readers registered
+                $this->numRecords = 0;
+                if(!is_null($this->records)){
+                    foreach($this->records as $r){
+                        $this->numRecords++;      
+                    }
+                }
+                App::getSmarty()->assign('numRecords', $this->numRecords);
+                
+            // Send filter params to Smarty
+                App::getSmarty()->assign('searchForm', $this->reader);
+                 
+            // Get logged user name
+                App::getSmarty()->assign('user',unserialize($_SESSION['user'])); 
             
-            //App::getSmarty()->assign('user', SessionUtils::loadData('user'));
-            App::getSmarty()->assign('user',unserialize($_SESSION['user']));
-            
-            App::getSmarty()->assign('searchForm', $this->reader);
-            App::getSmarty()->assign('records', $this->records);
-           
-            App::getSmarty()->display('ReaderList.tpl');
+            // Redirect to page
+                App::getSmarty()->display('ReaderList.tpl');
         }
         
         public function action_readerInfo(){
-            $this->reader->id = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
+            // Get params
+                $this->validateInfo();
             
-            $where['id_borrower'] = $this->reader->id; 
-            try {
-                $this->records_1 = App::getDB()->select("borrower_info", ["id_borrower", "name", "surname", "city" ,"address", "phone_number", "email"], $where);
-            } catch (\PDOException $e) {
-                Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-                if (App::getConf()->debug)
-                    Utils::addErrorMessage($e->getMessage());
-            }    
+            // Get reader personal info
+                try {
+                    $this->records = App::getDB()->select("borrower_info", ["id_borrower", "name", "surname", "city", "postal_code" ,"address", "phone_number", "email"], ["id_borrower" => $this->reader->id_reader]);
+                } catch (\PDOException $e) {
+                    Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
+                    if (App::getConf()->debug)
+                        Utils::addErrorMessage($e->getMessage());
+                }    
+                App::getSmarty()->assign('records1', $this->records);
             
-            try {
-                $this->records_2 = App::getDB()->select("borrowed_books", ["[><]book_stock" => ["book_code" => "book_code"]], ["borrowed_books.book_code", "borrowed_books.id_borrower", "borrowed_books.return_date", "book_stock.title"], $where);
-            } catch (\PDOException $e) {
-                Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-                if (App::getConf()->debug)
-                    Utils::addErrorMessage($e->getMessage());
-            }    
+            // Get borrowed books by reader
+                try {
+                    $this->records = App::getDB()->select("borrowed_books", ["[><]book_stock" => ["id_book" => "id_book"]], ["borrowed_books.id_book", "borrowed_books.id_borrower", "borrowed_books.return_date", "book_stock.title"], ["id_borrower" => $this->reader->id_reader]);
+                } catch (\PDOException $e) {
+                    Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
+                    if (App::getConf()->debug)
+                        Utils::addErrorMessage($e->getMessage());
+                }    
+                App::getSmarty()->assign('records2', $this->records);   
             
-            foreach($this->records_2 as $r){
-                $this->num_records++;      
-            }
+            // Get number of books borrowed by reader
+                $this->numRecords = 0;
+                if(!is_null($this->records)){
+                    foreach($this->records as $r){
+                        $this->numRecords++;      
+                    }
+                }
+                App::getSmarty()->assign('numRecords', $this->numRecords);
             
-            App::getSmarty()->assign('records_1', $this->records_1); 
-            App::getSmarty()->assign('records_2', $this->records_2);
-            App::getSmarty()->assign('numRecords', $this->num_records);
-            App::getSmarty()->assign('dateToday', date("Y-m-d"));
+            // Get today date
+                App::getSmarty()->assign('dateToday', date("Y-m-d"));
             
-            //App::getSmarty()->assign('user', SessionUtils::loadData('user'));
-            App::getSmarty()->assign('user',unserialize($_SESSION['user'])); 
-            App::getSmarty()->display('ReaderInfo.tpl');
+            // Get logged user name
+                App::getSmarty()->assign('user',unserialize($_SESSION['user'])); 
+            
+            // Redirect to page
+                App::getSmarty()->display('ReaderInfo.tpl');
         }
     }

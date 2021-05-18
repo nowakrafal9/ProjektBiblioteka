@@ -40,7 +40,7 @@
             {foreach $records as $r}
             {strip}
                 <tr>
-                    <td style="width: 10%">{$r["book_code"]}</td> 
+                    <td style="width: 10%">{$r["id_book"]}</td> 
                     <td style="width: 70%">{$r["title"]}</td>
                     <td style="width: 10%">{if {$r["borrowed"]} == "0"}Niewypożyczona{else}Wypożyczona{/if}</td>   
                     <td style="width: 10%">

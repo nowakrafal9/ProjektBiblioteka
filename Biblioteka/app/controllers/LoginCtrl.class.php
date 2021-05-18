@@ -28,13 +28,12 @@ class LoginCtrl {
 
         if (App::getMessages()->isError()) return false;
               
-        $role = App::getDB()->get("user", "role", [ "login" => $this->form->login]);
-        $pass = App::getDB()->get("user", "password", [ "login" => $this->form->login]);
+        $role = App::getDB()->get("employee", "role", [ "login" => $this->form->login]);
+        $pass = App::getDB()->get("employee", "password", [ "login" => $this->form->login]);
         
         if (isset($pass) && $this->form->pass == $pass) { 
             RoleUtils::addRole($role);
             
-            //SessionUtils::storeData('user', new User($this->form->login, $role));
             $_SESSION['user'] = serialize(new User($this->form->login, $role));
         } else { Utils::addErrorMessage('Niepoprawny login lub hasło'); }
         
