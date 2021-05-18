@@ -9,13 +9,15 @@
         private $borrowed;
         private $records;
         
-        public function validate() {
-
+        public function validateList() {
+            // Get form HTML
+            
             return !App::getMessages()->isError();
         }   
         
-        public function action_borrowedBooks(){ 
-            $this->validate();
+        public function action_borrowedList(){ 
+            // Get params
+                $this->validateList();
             
             $where ["ORDER"] = ["id_book"];
             
@@ -33,6 +35,6 @@
             //App::getSmarty()->assign('user', SessionUtils::loadData('user'));
             App::getSmarty()->assign('user',unserialize($_SESSION['user']));
            
-            App::getSmarty()->display('BorrowedBooks.tpl');
+            App::getSmarty()->display('BorrowedList.tpl');
         }
     }

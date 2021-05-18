@@ -2,8 +2,7 @@
 
 {block name=content}
     <section style = "padding-top: 1em; padding-bottom: 0;">
-        <form method="post" action="{$conf->action_url}bookStock">
-            
+        <form method="post" action="{$conf->action_url}bookStock">          
             <div class="row gtr-uniform" style="padding-bottom:0.75em">
                 <div class="col-3 col-5-xsmal">
                     <input type="text" name="book_code" id="book_code" value="{$searchForm->book_code}" placeholder="Kod książki" />
@@ -46,9 +45,9 @@
                             <td style="width: 15%">{if {$r["borrowed"]} == "0"}Niewypożyczona{else}Wypożyczona{/if}</td>   
                             <td style="width: 15%">
                                 {if {$r["borrowed"]} == "0"}
-                                    <center><a href="#" class="button small">Wypożycz</a></center>
+                                    <center><a href="{$conf->action_url}borrowedBorrow/{$r["id_book"]}" class="button small">Wypożycz</a></center>
                                 {else}
-                                    <center><a href="#" class="button small">Oddaj</a></center>
+                                    <center><a href="{$conf->action_url}borrowedReturn/{$r["id_book"]}" class="button small">Oddaj</a></center>
                                 {/if}
                             </td> 
 

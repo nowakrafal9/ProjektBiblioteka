@@ -19,7 +19,7 @@
                         </div>
                     </article>
 
-                    <article onclick="location='{$conf->action_url}borrowedBooks'" onmouseover="this.style.backgroundColor='#F4F4F4'" onmouseout="this.style.backgroundColor=''" style = "cursor: pointer; ">
+                    <article onclick="location='{$conf->action_url}borrowedList'" onmouseover="this.style.backgroundColor='#F4F4F4'" onmouseout="this.style.backgroundColor=''" style = "cursor: pointer; ">
                         <span class="icon solid fa-book-reader"></span>
                         <div class="content">
                             <h3>Wypożyczone książki</h3>
