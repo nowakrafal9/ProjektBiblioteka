@@ -57,6 +57,15 @@ class BookStockCtrl {
             }
             App::getSmarty()->assign('records', $this->records);
             
+        // Get number of books in library
+            $this->numRecords = 0;
+            if(!is_null($this->records)){
+                foreach($this->records as $r){
+                    $this->numRecords++;      
+                }
+            }
+            App::getSmarty()->assign('numRecords', $this->numRecords);
+                
         // Send filter params to Smarty
             App::getSmarty()->assign('searchForm', $this->book);  ;
         

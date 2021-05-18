@@ -26,36 +26,40 @@
     </section>
     
     <section class="table-wrapper" style = "padding-top: 1em; padding-bottom: 1em">
-    <table class="alt">
-        <thead>
-            <tr>
-                <th style="width: 10%">Kod książki</th>
-                <th style="width: 70%">Tytuł</th>
-                <th style="width: 10%">Status</th>    
-                <th style="width: 10%"></th>  
-            </tr>
-        </thead>
+        {if {$numRecords > 0}}
+            <table class="alt">
+                <thead>
+                    <tr>
+                        <th style="width: 10%">Kod książki</th>
+                        <th style="width: 60%">Tytuł</th>
+                        <th style="width: 15%">Status</th>    
+                        <th style="width: 15%"></th>  
+                    </tr>
+                </thead>
 
-        <tbody>
-            {foreach $records as $r}
-            {strip}
-                <tr>
-                    <td style="width: 10%">{$r["id_book"]}</td> 
-                    <td style="width: 70%">{$r["title"]}</td>
-                    <td style="width: 10%">{if {$r["borrowed"]} == "0"}Niewypożyczona{else}Wypożyczona{/if}</td>   
-                    <td style="width: 10%">
-                        {if {$r["borrowed"]} == "0"}
-                            <center><a href="#" class="button small">Wypożycz</a></center>
-                        {else}
-                            <center><a href="#" class="button small">Oddaj</a></center>
-                        {/if}
-                    </td> 
-                    
-                </tr>
-            {/strip}
-            {/foreach}
-        </tbody>
-    </table>
+                <tbody>
+                    {foreach $records as $r}
+                    {strip}
+                        <tr>
+                            <td style="width: 10%">{$r["id_book"]}</td> 
+                            <td style="width: 60%">{$r["title"]}</td>
+                            <td style="width: 15%">{if {$r["borrowed"]} == "0"}Niewypożyczona{else}Wypożyczona{/if}</td>   
+                            <td style="width: 15%">
+                                {if {$r["borrowed"]} == "0"}
+                                    <center><a href="#" class="button small">Wypożycz</a></center>
+                                {else}
+                                    <center><a href="#" class="button small">Oddaj</a></center>
+                                {/if}
+                            </td> 
+
+                        </tr>
+                    {/strip}
+                    {/foreach}
+                </tbody>
+            </table>
+        {else}
+            <h4>Brak książek w bibliotece</h4>
+        {/if}
     </section>
 {/block}
 
