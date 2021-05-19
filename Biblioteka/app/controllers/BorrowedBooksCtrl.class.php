@@ -79,7 +79,8 @@
                 App::getSmarty()->assign('user',unserialize($_SESSION['user']));
            
             // Redirect to page
-                App::getSmarty()->display('BorrowedList.tpl');
+                App::getSmarty()->assign('pageMode',"borrowedList");
+                App::getSmarty()->display('Borrowed.tpl');
         }
         
         public function action_borrowedInfo(){ 
@@ -125,7 +126,8 @@
                 App::getSmarty()->assign('user',unserialize($_SESSION['user']));
                 
             // Redirect to page
-                App::getSmarty()->display('BorrowedInfo.tpl');
+                App::getSmarty()->assign('pageMode',"borrowedInfo");
+                App::getSmarty()->display('Borrowed.tpl');
         }
         
         public function action_borrowedBorrow(){ 
