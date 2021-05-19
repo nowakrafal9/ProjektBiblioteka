@@ -15,14 +15,14 @@
         
         public function __construct() { $this->book = new BookInfoForm(); }
         
-        public function validateList() {
+        public function validateHTML() {
             // Get from HTML 
                 $this->book->title = ParamUtils::getFromRequest('title');
 
             return !App::getMessages()->isError();
         }
         
-        public function validateInfo() {
+        public function validateURL() {
             // Get from URL 
                 $this->book->id_book = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
 
@@ -31,7 +31,7 @@
         
         public function action_bookList(){   
             // Get params
-                $this -> validateList();
+                $this -> validateHTML();
             
             // Set filter params
                 $filter_params = [];
@@ -79,7 +79,7 @@
         
         public function action_bookInfo(){
             // Get params
-                $this -> validateInfo();      
+                $this -> validateURL();      
             
             // Get book info
                 try {

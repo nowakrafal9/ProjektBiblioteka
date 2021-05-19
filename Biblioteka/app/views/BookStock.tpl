@@ -47,7 +47,7 @@
                                 {if {$r["borrowed"]} == "0"}
                                     <center><a href="{url action = 'borrowedBorrow'}/{$r["id_book"]}" class="button small">Wypożycz</a></center>
                                 {else}
-                                    <center><a href="{url action = 'borrowedReturn'}/{$r["id_book"]}" class="button small">Oddaj</a></center>
+                                    <center><a href="{url action = 'borrowedInfo'}/{$r["id_book"]}" class="button small">Oddaj</a></center>
                                 {/if}
                             </td> 
 

@@ -14,7 +14,7 @@
         
         public function __construct() { $this->borrowed = new BorrowedBooksForm(); }
         
-        public function validateList() {
+        public function validateHTML() {
             // Get form HTML
                 $this->borrowed->id_book = ParamUtils::getFromRequest('id_book');
                 $this->borrowed->id_reader = ParamUtils::getFromRequest('id_reader');
@@ -23,9 +23,16 @@
             return !App::getMessages()->isError();
         }   
         
+        public function validateURL() {
+            // Get form URL
+                $this->borrowed->id_book = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
+            
+            return !App::getMessages()->isError();
+        }   
+        
         public function action_borrowedList(){ 
             // Get params
-                $this->validateList();
+                $this->validateHTML();
             
             // Set filter params
                 $filter_params = [];
@@ -46,7 +53,7 @@
                 
             // Get borrowed books list
                 try {
-                $this->records = App::getDB()->select("borrowed_books", [ "id_book", "id_borrower", "borrow_date", "return_date"], $where);
+                    $this->records = App::getDB()->select("borrowed_books", [ "id_book", "id_borrower", "borrow_date", "return_date"], $where);
                 } catch (\PDOException $e) {
                     Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
                     if (App::getConf()->debug)
@@ -74,10 +81,67 @@
         }
         
         public function action_borrowedInfo(){ 
+            // Get params
+                $this->validateURL();
+        
+            // Get borrowed book info
+                try {
+                    $this->records = App::getDB()->select("borrowed_books", ["[><]book_stock" => ["id_book" => "id_book"], "[><]borrower_info" => ["id_borrower" => "id_borrower"]], 
+                        ["borrowed_books.id_book", 
+                         "borrowed_books.borrow_date",
+                         "borrowed_books.return_date", 
+                         "book_stock.title",
+                         "borrower_info.id_borrower", 
+                         "borrower_info.name", 
+                         "borrower_info.surname",
+                         "borrower_info.phone_number"], 
+                        ["borrowed_books.id_book" =>  $this->borrowed->id_book]);
+                } catch (\PDOException $e) {
+                    Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
+                    if (App::getConf()->debug)
+                        Utils::addErrorMessage($e->getMessage());
+                }    
+                App::getSmarty()->assign('records', $this->records);
+            
+            // Get book return date
+                try {
+                    $this->records = App::getDB()->get("borrowed_books", "return_date", ["id_book" =>  $this->borrowed->id_book]);   
+                } catch (\PDOException $e) {
+                    Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
+                    if (App::getConf()->debug)
+                        Utils::addErrorMessage($e->getMessage());
+                }    
+            
+            // Get time left for borrower
+                App::getSmarty()->assign('timeLeft', $this->records);
+            
+            // Send id_book to Smarty
+                App::getSmarty()->assign('id_book', $this->borrowed->id_book);
+                
             // Get logged user name
                 App::getSmarty()->assign('user',unserialize($_SESSION['user']));
                 
             // Redirect to page
                 App::getSmarty()->display('BorrowedInfo.tpl');
+        }
+        
+        public function action_borrowedReturn(){ 
+            // Get params
+                $this->validateURL();
+            
+                try {
+                    App::getDB()->delete("borrowed_books", [ "id_book" => $this->borrowed->id_book]);
+                    App::getDB()->update("book_stock", [ "borrowed" => 0 ], [ "id_book" => $this->borrowed->id_book]);
+                } catch (\PDOException $e) {
+                    Utils::addErrorMessage('Wystąpił błąd modyfikacji rekordów');
+                    if (App::getConf()->debug)
+                        Utils::addErrorMessage($e->getMessage());
+                }    
+                
+            // Get logged user name
+                App::getSmarty()->assign('user',unserialize($_SESSION['user']));
+                
+            // Redirect to page
+                App::getSmarty()->display('AccessDenied.tpl');
         }
     }

@@ -21,3 +21,4 @@ Utils::addRoute('bookStock', 'BookStockCtrl', ['Pracownik', "Administrator"]);
 
 Utils::addRoute('borrowedList', 'BorrowedBooksCtrl', ['Pracownik', "Administrator"]);
 Utils::addRoute('borrowedInfo', 'BorrowedBooksCtrl', ['Pracownik', "Administrator"]);
+Utils::addRoute('borrowedReturn', 'BorrowedBooksCtrl', ['Pracownik', "Administrator"]);

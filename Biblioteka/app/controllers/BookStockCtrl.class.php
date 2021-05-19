@@ -13,7 +13,7 @@ class BookStockCtrl {
 
     public function __construct() { $this->book = new BookStockForm(); }
     
-    public function validate() {
+    public function validateHTML() {
         // Get from HTML
             $this->book->book_code = ParamUtils::getFromRequest('book_code');
             $this->book->title = ParamUtils::getFromRequest('title');
@@ -24,7 +24,7 @@ class BookStockCtrl {
         
     public function action_bookStock(){ 
         // Get params
-            $this -> validate();
+            $this -> validateHTML();
             
         // Set filter params    
             $filter_params = [];

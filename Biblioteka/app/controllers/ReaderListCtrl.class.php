@@ -101,7 +101,12 @@
             
             // Get borrowed books by reader
                 try {
-                    $this->records = App::getDB()->select("borrowed_books", ["[><]book_stock" => ["id_book" => "id_book"]], ["borrowed_books.id_book", "borrowed_books.id_borrower", "borrowed_books.return_date", "book_stock.title"], ["id_borrower" => $this->reader->id_reader]);
+                    $this->records = App::getDB()->select("borrowed_books", ["[><]book_stock" => ["id_book" => "id_book"]], 
+                        ["borrowed_books.id_book", 
+                         "borrowed_books.id_borrower", 
+                         "borrowed_books.return_date", 
+                         "book_stock.title"], 
+                        ["id_borrower" => $this->reader->id_reader]);
                 } catch (\PDOException $e) {
                     Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
                     if (App::getConf()->debug)
