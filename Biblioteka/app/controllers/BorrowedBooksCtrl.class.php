@@ -14,7 +14,7 @@
         
         public function __construct() { $this->borrowed = new BorrowedBooksForm(); }
         
-        public function validateHTML() {
+        public function getFromHTML() {
             // Get form HTML
                 $this->borrowed->id_book = ParamUtils::getFromRequest('id_book');
                 $this->borrowed->id_reader = ParamUtils::getFromRequest('id_reader');
@@ -23,16 +23,17 @@
             return !App::getMessages()->isError();
         }   
         
-        public function validateURL() {
+        public function getFromURL() {
             // Get form URL
                 $this->borrowed->id_book = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
-            
+                $this->borrowed->id_reader = ParamUtils::getFromCleanURL(2, true, 'Błędne wywołanie aplikacji');
+                
             return !App::getMessages()->isError();
         }   
         
         public function action_borrowedList(){ 
             // Get params
-                $this->validateHTML();
+                $this->getFromHTML();
             
             // Set filter params
                 $filter_params = [];
@@ -82,7 +83,7 @@
         
         public function action_borrowedInfo(){ 
             // Get params
-                $this->validateURL();
+                $this->getFromURL();
         
             // Get borrowed book info
                 try {
@@ -125,9 +126,37 @@
                 App::getSmarty()->display('BorrowedInfo.tpl');
         }
         
+        public function action_borrowedBorrow(){ 
+            // Get params
+                $this->getFromURL();
+                
+                if(isset($this->borrowed->id_reader)){
+                    $today = date("Y-m-d");
+
+                    App::getDB()->insert("borrowed_books", 
+                        ["id_book" => $this->borrowed->id_book,
+                         "id_borrower" => $this->borrowed->id_reader,
+                         "id_employee" => 1,
+                         "borrow_date" => date("Y-m-d"),
+                         "return_date" => date("Y-m-d")
+                        ]);
+                    
+                    App::getDB()->update("book_stock", 
+                        ["borrowed" => 1 ], 
+                        ["id_book" => $this->borrowed->id_book]);
+                }
+                
+                
+            // Get logged user name
+                App::getSmarty()->assign('user',unserialize($_SESSION['user']));
+                
+            // Redirect to page
+                App::getSmarty()->display('BookBorrow.tpl');
+        }
+        
         public function action_borrowedReturn(){ 
             // Get params
-                $this->validateURL();
+                $this->getFromURL();
             
                 try {
                     App::getDB()->delete("borrowed_books", [ "id_book" => $this->borrowed->id_book]);
@@ -142,6 +171,6 @@
                 App::getSmarty()->assign('user',unserialize($_SESSION['user']));
                 
             // Redirect to page
-                App::getSmarty()->display('AccessDenied.tpl');
+                App::getSmarty()->display('BookReturned.tpl');
         }
     }
