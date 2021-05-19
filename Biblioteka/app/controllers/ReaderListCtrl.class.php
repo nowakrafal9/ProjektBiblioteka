@@ -58,7 +58,11 @@
             
             // Get readers list
                 try {
-                $this->records = App::getDB()->select("borrower_info", [ "id_borrower", "name", "surname"], $where);
+                $this->records = App::getDB()->select("borrower_info",
+                        ["id_borrower",
+                         "name", 
+                         "surname"],
+                        $where);
                 } catch (\PDOException $e) {
                     Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
                     if (App::getConf()->debug)
@@ -91,7 +95,16 @@
             
             // Get reader personal info
                 try {
-                    $this->records = App::getDB()->select("borrower_info", ["id_borrower", "name", "surname", "city", "postal_code" ,"address", "phone_number", "email"], ["id_borrower" => $this->reader->id_reader]);
+                    $this->records = App::getDB()->select("borrower_info", 
+                            ["id_borrower", 
+                             "name", 
+                             "surname", 
+                             "city", 
+                             "postal_code", 
+                             "address", 
+                             "phone_number",
+                             "email"],
+                            ["id_borrower" => $this->reader->id_reader]);
                 } catch (\PDOException $e) {
                     Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
                     if (App::getConf()->debug)
@@ -101,7 +114,8 @@
             
             // Get borrowed books by reader
                 try {
-                    $this->records = App::getDB()->select("borrowed_books", ["[><]book_stock" => ["id_book" => "id_book"]], 
+                    $this->records = App::getDB()->select("borrowed_books", 
+                        ["[><]book_stock" => ["id_book" => "id_book"]], 
                         ["borrowed_books.id_book", 
                          "borrowed_books.id_borrower", 
                          "borrowed_books.return_date", 

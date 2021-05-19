@@ -87,7 +87,8 @@
         
             // Get borrowed book info
                 try {
-                    $this->records = App::getDB()->select("borrowed_books", ["[><]book_stock" => ["id_book" => "id_book"], "[><]borrower_info" => ["id_borrower" => "id_borrower"]], 
+                    $this->records = App::getDB()->select("borrowed_books", 
+                        ["[><]book_stock" => ["id_book" => "id_book"], "[><]borrower_info" => ["id_borrower" => "id_borrower"]], 
                         ["borrowed_books.id_book", 
                          "borrowed_books.borrow_date",
                          "borrowed_books.return_date", 

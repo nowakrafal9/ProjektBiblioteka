@@ -50,7 +50,10 @@
             
             // Get book titles list
                 try {
-                $this->records = App::getDB()->select("book_info", ["id_book","title"], $where);
+                    $this->records = App::getDB()->select("book_info", 
+                        ["id_book",
+                         "title"], 
+                         $where);
                 } catch (\PDOException $e) {
                     Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
                     if (App::getConf()->debug)
@@ -83,7 +86,15 @@
             
             // Get book info
                 try {
-                    $this->records = App::getDB()->select("book_info", ["[><]author_info" => ["author" => "id_author"]],["book_info.title", "book_info.pages", "author_info.name", "author_info.surname", "book_info.genre", "book_info.publisher"], ["id_book" => $this->book->id_book]);
+                    $this->records = App::getDB()->select("book_info", 
+                        ["[><]author_info" => ["author" => "id_author"]],
+                        ["book_info.title", 
+                         "book_info.pages", 
+                         "author_info.name", 
+                         "author_info.surname", 
+                         "book_info.genre", 
+                         "book_info.publisher"], 
+                        ["id_book" => $this->book->id_book]);
                 } catch (\PDOException $e) {
                     Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
                     if (App::getConf()->debug)
