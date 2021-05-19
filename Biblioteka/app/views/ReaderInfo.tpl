@@ -44,7 +44,7 @@
                         {else}
                             <td style="width: 20%">{$r["return_date"]}</td>
                         {/if}    
-                        <td style="width: 10%"><center><a href="{$conf->action_url}borrowedBooksInfo" class="button small">Szczegóły</a></center></td>
+                        <td style="width: 10%"><center><a href="{url action = 'borrowedInfo'}/{$r["id_book"]}" class="button small">Szczegóły</a></center></td>
                     </tr>
                 {/strip}
             {/foreach}
@@ -55,7 +55,7 @@
     </section>
         
     <section style="padding-top: 1em; padding-bottom: 1em">
-              <a href="{$conf->action_url}readerList" class="button primary">Powrót</a>
+              <a href="{url action = 'readerList'}" class="button primary">Powrót</a>
     </section>
 {/block}
 

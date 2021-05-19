@@ -2,7 +2,7 @@
 
 {block name=content}
     <section style="padding-top: 1em; padding-bottom: 1em">
-       <form method="post" action="{$conf->action_url}bookList">
+       <form method="post" action="{url action = 'bookList'}">
             
             <div class="row gtr-uniform" style="padding-bottom:0.75em">
                 <div class="col-12">
@@ -11,7 +11,7 @@
             </div>
                 
             <input type="submit" value="Szukaj" class="primary">
-            <a href="{$conf->action_url}bookList" class="button">Wyczyść filtr</a>
+            <a href="{url action = 'bookList'}" class="button">Wyczyść filtr</a>
         </form>
     </section>
     
@@ -23,7 +23,7 @@
                     {strip}
                         <tr>
                             <td style="width: 90%">{$r["title"]}</td>
-                            <td style="width: 10%"><center><a href="{$conf->action_url}bookInfo/{$r['id_book']}" class="button small">Informacje</a></center></td>
+                            <td style="width: 10%"><center><a href="{url action = 'bookInfo'}/{$r['id_book']}" class="button small">Informacje</a></center></td>
                         </tr>
                     {/strip}
                     {/foreach}

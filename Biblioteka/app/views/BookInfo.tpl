@@ -14,7 +14,7 @@
     </section> 
     
     <section style="padding-top: 1em; padding-bottom: 1em">
-        <a href="{$conf->action_url}bookList" class="button primary">Powrót</a>
+        <a href="{url action = 'bookList'}" class="button primary">Powrót</a>
     </section> 
 {/block}
 

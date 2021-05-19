@@ -2,7 +2,7 @@
 
 {block name=content}
     <section style = "padding-top: 1em; padding-bottom: 0;">
-        <form method="post" action="{$conf->action_url}borrowedBooks">
+        <form method="post" action="{url action = 'borrowedList'}">
             
             <div class="row gtr-uniform" style="padding-bottom:0.75em">
                 <div class="col-3 col-5-xsmal">
@@ -23,7 +23,7 @@
             </div>
                 
             <input type="submit" value="Szukaj" class="primary">
-            <a href="{$conf->action_url}borrowedBooks" class="button">Wyczyść filtr</a>
+            <a href="{url action = 'borrowedList'}" class="button">Wyczyść filtr</a>
         </form>    
     </section>
     
@@ -51,7 +51,7 @@
                     {else}
                         <td style="width: 15%">{$r["return_date"]}</td>
                     {/if}
-                    <td style="width: 10%"><center><a href="{$conf->action_url}borrowedInfo/{$r["id_book"]}" class="button small">Szczegóły</a></center></td> 
+                    <td style="width: 10%"><center><a href="{url action = 'borrowedInfo'}/{$r["id_book"]}" class="button small">Szczegóły</a></center></td> 
                 </tr>
             {/strip}
             {/foreach}

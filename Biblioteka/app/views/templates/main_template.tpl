@@ -38,17 +38,17 @@
                                 <h2>Menu</h2>
                         </header>
                         <ul>
-                            <li><a href="{$conf->action_url}main">Strona główna</a></li>
-                            <li><a href="{$conf->action_url}readerList">Lista czytelników</a></li>
-                            <li><a href="{$conf->action_url}bookList">Informacje o książce</a></li>
-                            <li><a href="{$conf->action_url}borrowedList">Wypożyczone książki</a></li>
-                            <li><a href="{$conf->action_url}bookStock">Lista książek</a></li>   
+                            <li><a href="{url action = 'main'}">Strona główna</a></li>
+                            <li><a href="{url action = 'readerList'}">Lista czytelników</a></li>
+                            <li><a href="{url action = 'bookList'}">Informacje o książce</a></li>
+                            <li><a href="{url action = 'borrowedList'}">Wypożyczone książki</a></li>
+                            <li><a href="{url action = 'bookStock'}">Lista książek</a></li>   
                         </ul>
                     </nav>
                            
                     <nav id="menu">
                         <ul>
-                            <li><a href="{$conf->action_url}logout">Wyloguj</a></li>
+                            <li><a href="{url action = 'logout'}">Wyloguj</a></li>
                         </ul>
                     </nav>
                         
