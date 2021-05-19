@@ -96,23 +96,24 @@
             
             // Get reader personal info
                 try {
+                    $this->reader->name = App::getDB()->get("borrower_info", "name", ["id_borrower" => $this->reader->id_reader]);
+                    $this->reader->surname = App::getDB()->get("borrower_info", "surname", ["id_borrower" => $this->reader->id_reader]);
                     $this->records = App::getDB()->select("borrower_info", 
-                            ["id_borrower", 
-                             "name", 
-                             "surname", 
-                             "city", 
-                             "postal_code", 
-                             "address", 
-                             "phone_number",
-                             "email"],
-                            ["id_borrower" => $this->reader->id_reader]);
+                        ["city", 
+                         "postal_code", 
+                         "address", 
+                         "phone_number",
+                         "email"],
+                        ["id_borrower" => $this->reader->id_reader]);
                 } catch (\PDOException $e) {
                     Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
                     if (App::getConf()->debug)
                         Utils::addErrorMessage($e->getMessage());
                 }    
+                App::getSmarty()->assign('readerName', $this->reader->name);
+                App::getSmarty()->assign('readerSurname', $this->reader->surname);
                 App::getSmarty()->assign('records1', $this->records);
-            
+                
             // Get borrowed books by reader
                 try {
                     $this->records = App::getDB()->select("borrowed_books", 

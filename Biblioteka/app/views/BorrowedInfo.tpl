@@ -26,7 +26,7 @@
     
     <section style="padding-top: 1em; padding-bottom: 1em">
         <h4>Czy na pewno chcesz zwrócić książkę?</h4>
-            <a href="{url action = 'borrowedReturn'}/{$id_book}" class="button small">Zwróć</a>
+            <a href="{url action = 'borrowedReturn'}/{$id_book}" class="button primary small">Zwróć</a>
             <a href="{url action = 'borrowedList'}" class="button small">Powrót</a>
     </section>
 {/block}
