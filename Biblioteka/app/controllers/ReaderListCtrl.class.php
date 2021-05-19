@@ -87,7 +87,8 @@
                 App::getSmarty()->assign('user',unserialize($_SESSION['user'])); 
             
             // Redirect to page
-                App::getSmarty()->display('ReaderList.tpl');
+                App::getSmarty()->assign('pageMode',"readerList"); 
+                App::getSmarty()->display('Reader.tpl');
         }
         
         public function action_readerInfo(){
@@ -146,6 +147,7 @@
                 App::getSmarty()->assign('user',unserialize($_SESSION['user'])); 
             
             // Redirect to page
-                App::getSmarty()->display('ReaderInfo.tpl');
+                App::getSmarty()->assign('pageMode',"readerInfo"); 
+                App::getSmarty()->display('Reader.tpl');
         }
     }
