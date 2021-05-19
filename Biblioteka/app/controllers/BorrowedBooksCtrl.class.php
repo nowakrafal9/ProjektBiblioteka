@@ -63,11 +63,12 @@
                 App::getSmarty()->assign('records', $this->records);
                 
             // Get number of borrowed books
-                $this->numRecords = 0;
-                if(!is_null($this->records)){
-                    foreach($this->records as $r){
-                        $this->numRecords++;      
-                    }
+                try {
+                    $this->numRecords = App::getDB()->count("borrowed_books", $where);
+                } catch (\PDOException $e) {
+                    Utils::addErrorMessage('Wystąpił błąd podczas liczenia rekordów');
+                    if (App::getConf()->debug)
+                        Utils::addErrorMessage($e->getMessage());
                 }
                 App::getSmarty()->assign('numRecords', $this->numRecords);
                       

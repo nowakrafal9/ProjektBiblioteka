@@ -58,7 +58,7 @@
             
             // Get readers list
                 try {
-                $this->records = App::getDB()->select("borrower_info",
+                    $this->records = App::getDB()->select("borrower_info",
                         ["id_borrower",
                          "name", 
                          "surname"],
@@ -71,11 +71,12 @@
                 App::getSmarty()->assign('records', $this->records);
                 
             // Get number of readers registered
-                $this->numRecords = 0;
-                if(!is_null($this->records)){
-                    foreach($this->records as $r){
-                        $this->numRecords++;      
-                    }
+                try {
+                    $this->numRecords = App::getDB()->count("borrower_info", $where);
+                } catch (\PDOException $e) {
+                    Utils::addErrorMessage('Wystąpił błąd podczas liczenia rekordów');
+                    if (App::getConf()->debug)
+                        Utils::addErrorMessage($e->getMessage());
                 }
                 App::getSmarty()->assign('numRecords', $this->numRecords);
                 
