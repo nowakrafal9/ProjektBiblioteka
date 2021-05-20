@@ -91,34 +91,35 @@
                 App::getSmarty()->display('Reader.tpl');
         }
         
+        public function getInfoRecords($param) {
+            try {
+                $this->records = App::getDB()->get("borrower_info", $param, ["id_borrower" => $this->reader->id_reader]);
+            } catch (\PDOException $e) {
+                Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
+                if (App::getConf()->debug)
+                    Utils::addErrorMessage($e->getMessage());
+            }    
+            
+            return $this->records;
+        }
+        
         public function action_readerInfo(){
             // Get params
                 $this->validateInfo();
             
-            // Get reader personal info
-                try {
-                    $this->reader->name = App::getDB()->get("borrower_info", "name", ["id_borrower" => $this->reader->id_reader]);
-                    $this->reader->surname = App::getDB()->get("borrower_info", "surname", ["id_borrower" => $this->reader->id_reader]);
-                    $this->records = App::getDB()->select("borrower_info", 
-                        ["city", 
-                         "postal_code", 
-                         "address", 
-                         "phone_number",
-                         "email"],
-                        ["id_borrower" => $this->reader->id_reader]);
-                } catch (\PDOException $e) {
-                    Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-                    if (App::getConf()->debug)
-                        Utils::addErrorMessage($e->getMessage());
-                }    
-                App::getSmarty()->assign('readerName', $this->reader->name);
-                App::getSmarty()->assign('readerSurname', $this->reader->surname);
-                App::getSmarty()->assign('records1', $this->records);
+            // Get reader personal info        
+                App::getSmarty()->assign('name', $this->getInfoRecords("name"));
+                App::getSmarty()->assign('surname', $this->getInfoRecords("surname"));
+                App::getSmarty()->assign('city', $this->getInfoRecords("city"));
+                App::getSmarty()->assign('address', $this->getInfoRecords("address"));
+                App::getSmarty()->assign('postal_code', $this->getInfoRecords("postal_code"));
+                App::getSmarty()->assign('phone_number', $this->getInfoRecords("phone_number"));
+                App::getSmarty()->assign('email', $this->getInfoRecords("email"));
                 
             // Get borrowed books by reader
                 try {
                     $this->records = App::getDB()->select("borrowed_books", 
-                        ["[><]book_stock" => ["id_book" => "id_book"]], 
+                        ["[><]book_stock" => ["id_book" => "id_book"]],
                         ["borrowed_books.id_book", 
                          "borrowed_books.id_borrower", 
                          "borrowed_books.return_date", 
@@ -129,14 +130,15 @@
                     if (App::getConf()->debug)
                         Utils::addErrorMessage($e->getMessage());
                 }    
-                App::getSmarty()->assign('records2', $this->records);   
+                App::getSmarty()->assign('records', $this->records);   
             
             // Get number of books borrowed by reader
-                $this->numRecords = 0;
-                if(!is_null($this->records)){
-                    foreach($this->records as $r){
-                        $this->numRecords++;      
-                    }
+                try {
+                    $this->numRecords = App::getDB()->count("borrowed_books", ["id_borrower" => $this->reader->id_reader]);
+                } catch (\PDOException $e) {
+                    Utils::addErrorMessage('Wystąpił błąd podczas liczenia rekordów');
+                    if (App::getConf()->debug)
+                        Utils::addErrorMessage($e->getMessage());
                 }
                 App::getSmarty()->assign('numRecords', $this->numRecords);
             

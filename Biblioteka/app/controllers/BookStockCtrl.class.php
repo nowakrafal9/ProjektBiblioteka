@@ -49,10 +49,10 @@ class BookStockCtrl {
         
         // Get books in library
             try {
-                $this->records = App::getDB()->select("book_stock", 
-                    ["id_book",
-                     "title",
-                     "borrowed"], 
+                $this->records = App::getDB()->select("book_stock",["[><]book_info" => ["book_code" => "book_code"]], 
+                    ["book_stock.id_book",
+                     "book_info.title",
+                     "book_stock.borrowed"], 
                      $where);
             } catch (\PDOException $e) {
                 Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
