@@ -40,7 +40,7 @@
             App::getSmarty()->assign('numRecords', $this->numRecords);
         }
         
-        public function prepareWhere($filter_params) {
+        public function prepareWhere($filter_params, $order) {
             $num_params = sizeof($filter_params);
                 
             if ($num_params > 1) {
@@ -48,7 +48,7 @@
             } else {
                 $where = &$filter_params;
             }
-            $where ["ORDER"] = ["surname","name"];
+            $where ["ORDER"] = $order;
             
             return $where;
         }
@@ -82,7 +82,8 @@
                 App::getSmarty()->assign('searchForm', $this->reader);
                 
             # Prepare $where for DB operation
-                $where = $this->prepareWhere($filter_params);
+                $order = ["surname","name"];
+                $where = $this->prepareWhere($filter_params, $order);
             
             # Get readers list from DB
                 try {
