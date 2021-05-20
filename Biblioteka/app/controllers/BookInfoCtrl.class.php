@@ -78,7 +78,8 @@
                 App::getSmarty()->assign('user',unserialize($_SESSION['user'])); 
             
             // Redirect to page
-                App::getSmarty()->display('BookList.tpl');
+                App::getSmarty()->assign('pageMode',"bookList");
+                App::getSmarty()->display('Book.tpl');
         }
         
         public function action_bookInfo(){
@@ -107,6 +108,7 @@
                 App::getSmarty()->assign('user',unserialize($_SESSION['user'])); 
             
             // Redirect to page
-                App::getSmarty()->display('BookInfo.tpl');
+                App::getSmarty()->assign('pageMode',"bookInfo");
+                App::getSmarty()->display('Book.tpl');
         }
     }

@@ -12,7 +12,7 @@
                     </div>	
 
                     <div class="col-3 col-5-xsmal">
-                        <input type="text" name="id_book" id="id_book" value="" placeholder="Kod czytelnika" />
+                        <input type="text" name="id_reader" id="id_reader" value="" placeholder="Kod czytelnika" />
                     </div>	
 
                     <div class="col-3">
@@ -66,6 +66,8 @@
         </section>
     {/if}
     
+    
+    
     {if {$pageMode} == "borrowedInfo"}
         <section style="padding-top: 1em; padding-bottom: 1em">
             {foreach $records as $r}
@@ -96,4 +98,5 @@
                 <a href="{url action = 'borrowedList'}" class="button small">Powrót</a>
         </section>
     {/if}
+        
 {/block}
