@@ -41,15 +41,21 @@
         
     {if {$pageMode} == "bookInfo"}
         <section style="padding-top: 1em; padding-bottom: 1em">
-           {foreach $records as $r}
-                <h3 class="content">{$r["title"]} </h3>   
-                <p>
-                    Autor: {$r["name"]} {$r["surname"]} <br/>             
-                    Wydawnictwo: {$r["publisher"]} <br/>
-                    Gatunek: {$r["genre"]} <br/>
-                    Ilość stron: {$r["pages"]} <br/>
-                </p>
-            {/foreach}
+            <h3 class="content">{$title}</h3>   
+            <p>
+                <strong>Kod tytułu:</strong> {$book_code}
+            </p>
+            <p>
+                <strong>Autor:</strong> {$name} {$surname} <br/>             
+                <strong>Wydawnictwo:</strong> {$publisher} <br/>
+                <strong>Gatunek:</strong> {$genre} <br/>
+                <strong>Ilość stron:</strong> {$pages} <br/>
+            </p>
+            <p>
+                <strong>Ilość egzemplarzy:</strong> WIP<br/>
+                <strong>Wypożyczone:</strong> WIP<br/>
+                <strong>W bibliotece:</strong> WIP<br/>
+            </p>
         </section> 
     
         <section style="padding-top: 1em; padding-bottom: 1em">

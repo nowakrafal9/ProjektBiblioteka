@@ -45,7 +45,7 @@
                             <td style="width: 15%">{if {$r["borrowed"]} == "0"}Niewypożyczona{else}Wypożyczona{/if}</td>   
                             <td style="width: 15%">
                                 {if {$r["borrowed"]} == "0"}
-                                    <center><a href="{url action = 'borrowedBorrow'}/{$r["id_book"]}/1" class="button small">Wypożycz</a></center>
+                                    <center><a href="{url action = 'borrowedBorrow'}/{$r["id_book"]}" class="button small">Wypożycz</a></center>
                                 {else}
                                     <center><a href="{url action = 'borrowedInfo'}/{$r["id_book"]}" class="button small">Oddaj</a></center>
                                 {/if}
