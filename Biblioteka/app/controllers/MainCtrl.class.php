@@ -6,10 +6,12 @@
     
     class MainCtrl {
          public function action_main() {
-            // Get logged user name
-                App::getSmarty()->assign('user',unserialize($_SESSION['user'])); 
-            
-            // Redirect to page
-                App::getSmarty()->display('Main.tpl');
+            # Redirect to page
+               $this->generateView();
+        }
+        
+        public function generateView() { 
+            App::getSmarty()->assign('user',unserialize($_SESSION['user'])); 
+            App::getSmarty()->display('Main.tpl');
         }
     }
