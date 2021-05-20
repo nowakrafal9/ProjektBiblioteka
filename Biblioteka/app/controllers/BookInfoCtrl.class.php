@@ -82,29 +82,50 @@
                 App::getSmarty()->display('Book.tpl');
         }
         
+        public function bookInfoRecords($param) {
+            try {
+                $this->records = App::getDB()->get("book_info", 
+                    ["[><]author_info" => ["author" => "id_author"]], 
+                     $param, 
+                    ["id_book" => $this->book->id_book]);
+            } catch (\PDOException $e) {
+                Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
+                if (App::getConf()->debug)
+                    Utils::addErrorMessage($e->getMessage());
+            }        
+       
+            return $this->records;
+        }
+        
         public function action_bookInfo(){
             // Get params
                 $this -> validateURL();      
             
-            // Get book info
+            // Get book info                 
+                App::getSmarty()->assign('book_code', $this->bookInfoRecords("book_info.book_code"));
+                App::getSmarty()->assign('title', $this->bookInfoRecords("book_info.title")); 
+                App::getSmarty()->assign('pages', $this->bookInfoRecords("book_info.pages")); 
+                App::getSmarty()->assign('name', $this->bookInfoRecords("author_info.name")); 
+                App::getSmarty()->assign('surname', $this->bookInfoRecords("author_info.surname")); 
+                App::getSmarty()->assign('genre', $this->bookInfoRecords("book_info.genre")); 
+                App::getSmarty()->assign('publisher', $this->bookInfoRecords("book_info.publisher")); 
+            
+            // Get number of books
                 try {
-                    $this->records = App::getDB()->select("book_info", 
-                        ["[><]author_info" => ["author" => "id_author"]],
-                        ["book_info.title", 
-                         "book_info.pages", 
-                         "author_info.name", 
-                         "author_info.surname", 
-                         "book_info.genre", 
-                         "book_info.publisher"], 
-                        ["id_book" => $this->book->id_book]);
+                    $this->records[0] = App::getDB()->count("book_stock", ["book_code" => $this->bookInfoRecords("book_info.book_code")]);
+                    $this->records[1] = App::getDB()->count("book_stock", ["book_code" => $this->bookInfoRecords("book_info.book_code"), "borrowed" => 0]);
+                    $this->records[2] = App::getDB()->count("book_stock", ["book_code" => $this->bookInfoRecords("book_info.book_code"), "borrowed" => 1]);
+                    
                 } catch (\PDOException $e) {
-                    Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
+                    Utils::addErrorMessage('Wystąpił błąd podczas liczenia rekordów');
                     if (App::getConf()->debug)
                         Utils::addErrorMessage($e->getMessage());
-                }            
-                App::getSmarty()->assign('records', $this->records); 
-              
-             // Get logged user name
+                }      
+                App::getSmarty()->assign('allCount', $this->records[0]); 
+                App::getSmarty()->assign('inLibraryCount', $this->records[1]);
+                App::getSmarty()->assign('borrowedCount', $this->records[2]);       
+                
+            // Get logged user name
                 App::getSmarty()->assign('user',unserialize($_SESSION['user'])); 
             
             // Redirect to page
