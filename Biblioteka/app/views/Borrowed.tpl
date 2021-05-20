@@ -19,7 +19,7 @@
                         <select name="status" id="status">
                             <option value="" selected disabled hidden>Status</option>
                             <option value="0" {if isset($searchForm->borrowed) and $searchForm->borrowed==0}selected{/if}>Po terminie</option>
-                            <option value="1" {if isset($searchForm->borrowed) and $searchForm->borrowed==1}selected{/if}>OK</option>
+                            <option value="1" {if isset($searchForm->borrowed) and $searchForm->borrowed==1}selected{/if}>W terminie</option>
                         </select>
                     </div>   	
                 </div>
@@ -70,26 +70,24 @@
     
     {if {$pageMode} == "borrowedInfo"}
         <section style="padding-top: 1em; padding-bottom: 1em">
-            {foreach $records as $r}
-                <div class="row">
-                    <div class="col-6 col-12-small">
-                        <h3>Wypożyczona książka</h3>
-                        <strong>Kod książki:</strong> {$r["id_book"]} <br/>
-                        <strong>Tytuł książki:</strong> {$r["title"]} <br/>
-                        <strong>Data wypożyczenia:</strong> {$r["borrow_date"]} <br/>
-                        <strong>Data oddania:</strong> {$r["return_date"]} <br/>
-                        <strong>Pozostały czas: </strong> Do zrobienia <br/>
-                    </div>
-
-                    <div class="col-6 col-12-small">
-                        <h3>Dane czytelnika</h3>
-                        <strong>Kod czytelnika:</strong> {$r["id_borrower"]} <br/>
-                        <strong>Imie:</strong> {$r["name"]} <br/>
-                        <strong>Nazwisko:</strong> {$r["surname"]} <br/>
-                        <strong>Nr telefonu:</strong> {$r["phone_number"]} <br/>
-                    </div>
+            <div class="row">
+                <div class="col-6 col-12-small">
+                    <h3>Wypożyczona książka</h3>
+                    <strong>Kod książki:</strong> {$id_book} <br/>
+                    <strong>Tytuł książki:</strong> {$title} <br/>
+                    <strong>Data wypożyczenia:</strong> {$borrow_date} <br/>
+                    <strong>Data oddania:</strong> {$return_date} <br/>
+                    <strong>Pozostały czas: </strong> Do zrobienia <br/>
                 </div>
-            {/foreach}
+
+                <div class="col-6 col-12-small">
+                    <h3>Dane czytelnika</h3>
+                    <strong>Kod czytelnika:</strong> {$id_borrower} <br/>
+                    <strong>Imie:</strong> {$name} <br/>
+                    <strong>Nazwisko:</strong> {$surname} <br/>
+                    <strong>Nr telefonu:</strong> {$phone_number} <br/>
+                </div>
+            </div>
         </section>
     
         <section style="padding-top: 1em; padding-bottom: 1em">
