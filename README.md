@@ -2,7 +2,7 @@
 * Temat: Aplikacja przeznaczona dla biblioteki
 * Diagram bazy: 
    
-
+[!Diagram](./baza%20danych/Diagram.png)
   
 ### Omówienie założeń projektu:  
 Aplikacja jest skierowana dla bibliotek w celu usprawnienia systemu wypożyczania książek. Pracownicy biblioteki mają dostęp do takich informacji jak:  
