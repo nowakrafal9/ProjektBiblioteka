@@ -53,13 +53,13 @@
             return $where;
         }
         
-        public function getReaderInfo($param) {
+        public function getRecords($mode, $table, $join, $column, $where) {
             try {
-                $this->records = App::getDB()->get("borrower_info", $param, ["id_borrower" => $this->reader->id_reader]);
+                if($mode == "readerInfo"){ $this->records = App::getDB()->get($table,$column,$where); }
             } catch (\PDOException $e) {
                 Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-                if (App::getConf()->debug){ Utils::addErrorMessage($e->getMessage()); }
-            }    
+                if (App::getConf()->debug) { Utils::addErrorMessage($e->getMessage()); }
+            }        
             
             return $this->records;
         }
@@ -88,9 +88,7 @@
             # Get readers list from DB
                 try {
                     $this->records = App::getDB()->select("borrower_info",
-                        ["id_borrower",
-                         "name", 
-                         "surname"],
+                        ["id_borrower", "name", "surname"],
                         $where);
                 } catch (\PDOException $e) {
                     Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
@@ -110,15 +108,17 @@
             # Get params
                 $this->getFromUrl();
             
-            # Get reader personal info        
-                App::getSmarty()->assign('name', $this->getReaderInfo("name"));
-                App::getSmarty()->assign('surname', $this->getReaderInfo("surname"));
-                App::getSmarty()->assign('city', $this->getReaderInfo("city"));
-                App::getSmarty()->assign('address', $this->getReaderInfo("address"));
-                App::getSmarty()->assign('postal_code', $this->getReaderInfo("postal_code"));
-                App::getSmarty()->assign('phone_number', $this->getReaderInfo("phone_number"));
-                App::getSmarty()->assign('email', $this->getReaderInfo("email"));
+            # Get reader personal info
+                $where = ["id_borrower" => $this->reader->id_reader];
                 
+                App::getSmarty()->assign('name', $this->getRecords("readerInfo", "borrower_info", null, "name", $where));
+                App::getSmarty()->assign('surname', $this->getRecords("readerInfo", "borrower_info", null, "surname", $where));
+                App::getSmarty()->assign('city', $this->getRecords("readerInfo", "borrower_info", null, "city", $where));
+                App::getSmarty()->assign('address', $this->getRecords("readerInfo", "borrower_info", null, "address", $where));
+                App::getSmarty()->assign('postal_code', $this->getRecords("readerInfo", "borrower_info", null, "postal_code", $where));
+                App::getSmarty()->assign('phone_number', $this->getRecords("readerInfo", "borrower_info", null, "phone_number", $where));
+                App::getSmarty()->assign('email', $this->getRecords("readerInfo", "borrower_info", null, "email", $where));
+                    
             # Get borrowed books by reader
                 try {
                     $this->records = App::getDB()->select("borrowed_books", 
