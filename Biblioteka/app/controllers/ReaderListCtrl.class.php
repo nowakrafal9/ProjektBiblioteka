@@ -15,7 +15,7 @@
         
         public function __construct() { $this->reader = new ReaderListForm(); }
         
-        public function getFormParam() {
+        public function getForm() {
             $this->reader->id_reader = ParamUtils::getFromRequest('id_reader');
             $this->reader->name = ParamUtils::getFromRequest('name');
             $this->reader->surname = ParamUtils::getFromRequest('surname');
@@ -23,7 +23,7 @@
             return !App::getMessages()->isError();
         }   
         
-        public function getFromUrl() {
+        public function getUrl() {
             $this->reader->id_reader = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
 
             return !App::getMessages()->isError();
@@ -66,7 +66,7 @@
         
         public function action_readerList(){
             # Get params
-                $this->getFormParam();
+                $this->getForm();
             
             # Set filter params
                 $filter_params = [];
@@ -106,7 +106,7 @@
         
         public function action_readerInfo(){
             # Get params
-                $this->getFromUrl();
+                $this->getUrl();
             
             # Get reader personal info
                 $where = ["id_borrower" => $this->reader->id_reader];

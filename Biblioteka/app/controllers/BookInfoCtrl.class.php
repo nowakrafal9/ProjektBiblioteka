@@ -15,13 +15,13 @@
         
         public function __construct() { $this->book = new BookInfoForm(); }
         
-        public function getFormParam() {
+        public function getForm() {
             $this->book->title = ParamUtils::getFromRequest('title');
 
             return !App::getMessages()->isError();
         }
         
-        public function getFromURL() {
+        public function getURL() {
             $this->book->id_book = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
 
             return !App::getMessages()->isError();
@@ -64,7 +64,7 @@
              
         public function action_bookList(){   
             # Get params
-                $this -> getFormParam();
+                $this -> getForm();
             
             # Set filter params
                 $filter_params = [];
@@ -99,7 +99,7 @@
         
         public function action_bookInfo(){
             # Get params
-                $this -> getFromURL();      
+                $this -> getURL();      
             
             # Get book info    
                 $join = ["[><]author_info" => ["author" => "id_author"]];

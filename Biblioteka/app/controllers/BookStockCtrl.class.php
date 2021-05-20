@@ -14,7 +14,7 @@ class BookStockCtrl {
 
     public function __construct() { $this->book = new BookStockForm(); }
     
-    public function getFormParam() {
+    public function getForm() {
         $this->book->book_code = ParamUtils::getFromRequest('book_code');
         $this->book->title = ParamUtils::getFromRequest('title');
         $this->book->borrowed = ParamUtils::getFromRequest('borrowed');
@@ -48,7 +48,7 @@ class BookStockCtrl {
         
     public function action_bookStock(){ 
         # Get params
-            $this -> getFormParam();
+            $this -> getForm();
             
         # Set filter params    
             $filter_params = [];
