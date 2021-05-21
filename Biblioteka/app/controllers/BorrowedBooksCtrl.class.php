@@ -5,7 +5,8 @@
     use core\FunctionsDB;
     use core\Utils;
     use core\ParamUtils;
-    
+    use core\SessionUtils;
+        
     use app\forms\BorrowedBooksForm;
     use app\forms\ReaderListForm;
     
@@ -70,7 +71,7 @@
                 
             # Redirect to page
                 App::getSmarty()->assign('pageMode',"borrowedList");
-                $this->generateView();
+                $this->generateView('Borrowed.tpl');
         }
         
         public function action_borrowedInfo(){ 
@@ -97,7 +98,7 @@
              
             # Redirect to page
                 App::getSmarty()->assign('pageMode',"borrowedInfo");
-                $this->generateView();
+                $this->generateView('Borrowed.tpl');
         }
         
         public function action_bookBorrow(){ 
@@ -109,14 +110,14 @@
             
             # Choose path to go
                 if(isset($this->book->id_reader)){
-                    
+                    App::getSmarty()->assign('pageMode',"bookBorrowed");
                 }
                 else{
-                    
+                    App::getSmarty()->assign('pageMode',"bookBorrowed");
                 }
                 
             # Redirect to page
-                $this->generateView();
+                $this->generateView('BookBorrowed.tpl');
         }
         
         public function action_bookReturn(){ 
@@ -133,12 +134,11 @@
                 }    
                           
             # Redirect to page
-                App::getSmarty()->assign('user',unserialize($_SESSION['user']));
-                App::getSmarty()->display('BookReturned.tpl');
+                $this->generateView('BookReturned.tpl');
         }
         
-        public function generateView() {
-            App::getSmarty()->assign('user',unserialize($_SESSION['user']));
-            App::getSmarty()->display('Borrowed.tpl');
+        public function generateView($destination) {
+            App::getSmarty()->assign('user', SessionUtils::loadObject("user", true));
+            App::getSmarty()->display($destination);
         }
     }

@@ -5,7 +5,8 @@
     use core\FunctionsDB;
     use core\Utils;
     use core\ParamUtils;
-    
+    use core\SessionUtils;
+        
     use app\forms\BookStockForm;
     
 class BookStockCtrl {
@@ -56,7 +57,7 @@ class BookStockCtrl {
     }
     
     public function generateView() {
-        App::getSmarty()->assign('user',unserialize($_SESSION['user']));
+        App::getSmarty()->assign('user', SessionUtils::loadObject("user", true));
         App::getSmarty()->display('BookStock.tpl');
     }
 }
