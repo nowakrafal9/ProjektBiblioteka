@@ -54,7 +54,7 @@
                                 {else}
                                     <td style="width: 15%">{$r["return_date"]}</td>
                                 {/if}
-                                <td style="width: 10%"><center><a href="{url action = 'borrowedInfo'}/{$r["id_book"]}" class="button small">Oddaj</a></center></td> 
+                                <td style="width: 10%"><center><a href="{url action = 'borrowedReturn'}/{$r["id_book"]}" class="button small">Oddaj</a></center></td> 
                             </tr>
                         {/strip}
                         {/foreach}
