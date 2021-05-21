@@ -14,7 +14,7 @@
         private $book;
         private $reader;
         
-        public function __construct() { 
+        public function __construct() {
             $this->book = new BorrowedBooksForm(); 
             $this->reader = new ReaderListForm();
         }
@@ -45,6 +45,11 @@
                 if (isset($this->book->id_reader) && strlen($this->book->id_reader) > 0) {
                     $filter_params['id_borrower[~]'] = $this->book->id_reader.'%';
                 }
+                if (isset($this->book->status)) {
+                    if($this->book->status == 0){ $filter_params['id_borrower[>=]'] = date("Y-m-d"); }
+                    if($this->book->status == 1){ $filter_params['id_borrower[<]'] = date("Y-m-d"); }
+                }
+                App::getSmarty()->assign('searchForm', $this->book);
                 
             # Prepare $where for DB operation
                 $order = ["return_date"];
