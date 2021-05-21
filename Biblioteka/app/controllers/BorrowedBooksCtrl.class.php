@@ -19,32 +19,23 @@
             $this->reader = new ReaderListForm();
         }
         
-        public function getForm1/* Form for filtering borrowed books */() {
+        public function getForm() {
             $this->book->id_book = ParamUtils::getFromRequest('id_book');
             $this->book->id_reader = ParamUtils::getFromRequest('id_reader');
             $this->book->status = ParamUtils::getFromRequest('status');
-     
+                 
             return !App::getMessages()->isError();
         } 
-        
-        public function getForm2/* Form for searching reader */() {
-            $this->reader->id_reader = ParamUtils::getFromRequest('id_reader');
-            $this->reader->name = ParamUtils::getFromRequest('name');
-            $this->reader->surname = ParamUtils::getFromRequest('surname');
-     
-            return !App::getMessages()->isError();
-        } 
-        
+              
         public function getURL() {
-            $this->book->id_book = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
-            $this->book->id_reader = ParamUtils::getFromCleanURL(2, false);
-                
+            $this->book->id_book = ParamUtils::getFromCleanURL(1, true, "Błąd przesłania parametrów"); 
+               
             return !App::getMessages()->isError();
         }
               
         public function action_borrowedList(){ 
             # Get params
-                $this->getForm1();
+                $this->getForm();
             
             # Set filter params
                 $filter_params = [];
@@ -71,10 +62,10 @@
                 
             # Redirect to page
                 App::getSmarty()->assign('pageMode',"borrowedList");
-                $this->generateView('Borrowed.tpl');
+                $this->generateView();
         }
         
-        public function action_borrowedInfo(){ 
+        public function action_borrowedReturn(){ 
             # Get params
                 $this->getURL();
  
@@ -98,26 +89,7 @@
              
             # Redirect to page
                 App::getSmarty()->assign('pageMode',"borrowedInfo");
-                $this->generateView('Borrowed.tpl');
-        }
-        
-        public function action_bookBorrow(){ 
-            # Get params
-                $this->getURL();
-                
-            # Get today date
-                $today = date("Y-m-d");
-            
-            # Choose path to go
-                if(isset($this->book->id_reader)){
-                    App::getSmarty()->assign('pageMode',"bookBorrowed");
-                }
-                else{
-                    App::getSmarty()->assign('pageMode',"bookBorrowed");
-                }
-                
-            # Redirect to page
-                $this->generateView('BookBorrowed.tpl');
+                $this->generateView();
         }
         
         public function action_bookReturn(){ 
@@ -133,12 +105,12 @@
                         Utils::addErrorMessage($e->getMessage());
                 }    
                           
-            # Redirect to page
-                $this->generateView('BookReturned.tpl');
+            # Redirect to borrowedList
+                App::getRouter()->forwardTo("borrowedList");
         }
         
-        public function generateView($destination) {
+        public function generateView() {
             App::getSmarty()->assign('user', SessionUtils::loadObject("user", true));
-            App::getSmarty()->display($destination);
+            App::getSmarty()->display("Borrowed.tpl");
         }
     }
