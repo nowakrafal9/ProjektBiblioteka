@@ -38,7 +38,8 @@
             if (isset($pass) && $this->form->pass == $pass && $active == 1) { 
                 RoleUtils::addRole($role);
                 
-                SessionUtils::storeObject("user", new User($this->form->login, $role, $id_employee));
+                SessionUtils::storeObject("user", new User($this->form->login, $role));
+                SessionUtils::store("id_employee", $id_employee);
             } else { Utils::addErrorMessage('Niepoprawny login lub hasło'); }
 
             return !App::getMessages()->isError();

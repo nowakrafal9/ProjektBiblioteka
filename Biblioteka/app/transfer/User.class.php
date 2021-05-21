@@ -6,9 +6,8 @@
         public $role;
         public $id_employee;
         
-        public function __construct($login, $role, $id_employee) {
+        public function __construct($login, $role) {
             $this->login = $login;
             $this->role = $role;
-            $this->id_employee = $id_employee;
         }
     }
