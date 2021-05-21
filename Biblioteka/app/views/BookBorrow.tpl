@@ -5,6 +5,8 @@
     {if {$pageMode} == "bookBorrowed"}
         <section style = "padding-top: 1em; padding-bottom: 0;">
             <h3>Wypożyczono książkę</h3>
+            
+            <a href="{url action = 'borrowedList'}" class="button primary">Powrót</a>
         </section>  
     {/if}
     
@@ -62,29 +64,33 @@
         
         <section style = "padding-top: 1em; padding-bottom: 0;">
             {if {$formSent} == 1}
-                <table class="alt">
-                    <thead>
-                        <tr>
-                            <th style="width: 10%">Id czytelnika</th>
-                            <th style="width: 40%">Nazwisko</th>
-                            <th style="width: 40%">Imię</th>  
-                            <th style="width: 10%"> </th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {foreach $records as $r}
-                        {strip}
+                {if {$numRecords} > 0}
+                    <table class="alt">
+                        <thead>
                             <tr>
-                                <td style="width: 10%">{$r["id_borrower"]}</td> 
-                                <td style="width: 40%">{$r["surname"]}</td>
-                                <td style="width: 40%">{$r["name"]}</td>      
-                                <td style="width: 10%" ><center><a href="{url action = 'bookBorrow'}/{$id_book}/{$r['id_borrower']}" class="button small">Wypożycz</a></center></td>  
+                                <th style="width: 10%">Id czytelnika</th>
+                                <th style="width: 40%">Nazwisko</th>
+                                <th style="width: 40%">Imię</th>  
+                                <th style="width: 10%"> </th>
                             </tr>
-                        {/strip}
-                        {/foreach}
-                    </tbody>
-                </table>
+                        </thead>
+
+                        <tbody>
+                            {foreach $records as $r}
+                            {strip}
+                                <tr>
+                                    <td style="width: 10%">{$r["id_borrower"]}</td> 
+                                    <td style="width: 40%">{$r["surname"]}</td>
+                                    <td style="width: 40%">{$r["name"]}</td>      
+                                    <td style="width: 10%" ><center><a href="{url action = 'bookBorrow'}/{$id_book}/{$r['id_borrower']}" class="button small">Wypożycz</a></center></td>  
+                                </tr>
+                            {/strip}
+                            {/foreach}
+                        </tbody>
+                    </table>
+                {else}
+                    <h3>Brak szukanych czytelników.</h3>
+                {/if}
             {/if}
         </section>
     {/if}
@@ -142,27 +148,31 @@
         
         <section style = "padding-top: 1em; padding-bottom: 0;">
             {if {$formSent} == 1}
-                <table class="alt">
-                    <thead>
-                        <tr>
-                            <th style="width: 15%">Id książki</th>
-                            <th style="width: 75%">Tytuł</th>
-                            <th style="width: 10%"> </th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {foreach $records as $r}
-                        {strip}
+                {if {$numRecords} > 0}
+                    <table class="alt">
+                        <thead>
                             <tr>
-                                <td style="width: 15%">{$r["id_book"]}</td> 
-                                <td style="width: 75%">{$r["title"]}</td>  
-                                <td style="width: 10%" ><center><a href="{url action = 'bookBorrow'}/{$r["id_book"]}" class="button small">Wypożycz</a></center></td>  
+                                <th style="width: 15%">Id książki</th>
+                                <th style="width: 75%">Tytuł</th>
+                                <th style="width: 10%"> </th>
                             </tr>
-                        {/strip}
-                        {/foreach}
-                    </tbody>
-                </table>
+                        </thead>
+
+                        <tbody>
+                            {foreach $records as $r}
+                            {strip}
+                                <tr>
+                                    <td style="width: 15%">{$r["id_book"]}</td> 
+                                    <td style="width: 75%">{$r["title"]}</td>  
+                                    <td style="width: 10%" ><center><a href="{url action = 'bookBorrow'}/{$r["id_book"]}" class="button small">Wypożycz</a></center></td>  
+                                </tr>
+                            {/strip}
+                            {/foreach}
+                        </tbody>
+                    </table>
+                {else}
+                    <h3>Brak szukanych książek.</h3>
+                {/if}
             {/if}
         </section>
     {/if}

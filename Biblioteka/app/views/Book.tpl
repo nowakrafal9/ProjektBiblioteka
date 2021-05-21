@@ -52,9 +52,9 @@
                 <strong>Ilość stron:</strong> {$pages} <br/>
             </p>
             <p>
-                <strong>Ilość egzemplarzy:</strong> WIP<br/>
-                <strong>Wypożyczone:</strong> WIP<br/>
-                <strong>W bibliotece:</strong> WIP<br/>
+                <strong>Ilość egzemplarzy:</strong> {$allBooks}<br/>
+                <strong>Wypożyczone:</strong> {$borrowedBooks}<br/>
+                <strong>W bibliotece:</strong> {{$allBooks}-{$borrowedBooks}}<br/>
             </p>
         </section> 
     

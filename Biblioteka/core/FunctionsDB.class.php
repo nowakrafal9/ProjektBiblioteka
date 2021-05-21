@@ -17,7 +17,7 @@
             return $records;
         }
         
-        public static function countRecords($table, &$where){
+        public static function countRecords($table, $where){
             try {
                 $numRecords = App::getDB()->count($table, $where);
             } catch (\PDOException $e) {
@@ -26,6 +26,8 @@
             }
             
             App::getSmarty()->assign('numRecords', $numRecords);
+            
+            return $numRecords;
         }
         
         public static function prepareWhere($filter_params, $order) {

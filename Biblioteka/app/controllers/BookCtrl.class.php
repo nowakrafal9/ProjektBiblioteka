@@ -78,8 +78,13 @@
                 App::getSmarty()->assign('publisher', FunctionsDB::getRecords("get", "book_info", $join,"book_info.publisher",$where)); 
                 
             # Get number of books
-                #TODO     
-                  
+                $book_code = FunctionsDB::getRecords("get", "book_info",null ,"book_code",$where);
+                $where = ["book_code" => $book_code];  
+                App::getSmarty()->assign('allBooks', FunctionsDB::countRecords("book_stock", $where));     
+                
+                $where = ["book_code" => $book_code, "borrowed" => 1];
+                App::getSmarty()->assign('borrowedBooks', FunctionsDB::countRecords("book_stock", $where)); 
+                
             # Redirect to page
                 App::getSmarty()->assign('pageMode',"bookInfo"); 
                 $this->generateView();

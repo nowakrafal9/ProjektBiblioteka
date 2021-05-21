@@ -44,9 +44,31 @@
         public function action_bookBorrow(){ 
             # Get params
                 $this->getURL();
-
+            
+            # Set book and reader existance to default value
+                $book_exist = false;
+                $reader_exist = false;
+            
+            # Check if book and reader exists
+                if(isset($this->book->id_book)){
+                    try{
+                        $book_exist = App::getDB()->has("book_stock", ["id_book" => $this->book->id_book]);
+                    } catch (Exception $ex) {
+                        Utils::addErrorMessage('Nie ma takiej książki w bazie');
+                        if (App::getConf()->debug){ Utils::addErrorMessage($e->getMessage()); }
+                    }
+                }
+                if(isset($this->reader->id_reader)){
+                    try{
+                        $reader_exist = App::getDB()->has("borrower_info", ["id_borrower" => $this->reader->id_reader]);
+                    } catch (Exception $ex) {
+                        Utils::addErrorMessage('Nie ma takiej książki w bazie');
+                        if (App::getConf()->debug){ Utils::addErrorMessage($e->getMessage()); }
+                    }
+                }
+                
             # Choose path to go
-                if(isset($this->book->id_book) && isset($this->reader->id_reader)){
+                if($book_exist && $reader_exist){
                     try{
                         # Insert info about borrowed book
                             App::getDB()->insert("borrowed_books", 
@@ -68,7 +90,7 @@
                     
                     # Choose page view mode
                         App::getSmarty()->assign('pageMode',"bookBorrowed");
-                } else if(isset($this->book->id_book) && !isset($this->reader->id_reader)){
+                } else if($book_exist){
                     # Get book info from DB
                         $join = ["[><]book_info" => ["book_stock.book_code" => "book_code"]];
                         $where = ["book_stock.id_book" =>  $this->book->id_book];
@@ -92,13 +114,15 @@
                         }
                         App::getSmarty()->assign('searchForm', $this->reader);
                         
-                    # Get readers if searched
+                    # Get readers if searched and count them
                         if(isset($this->reader->id_reader) || isset($this->reader->name) || isset($this->reader->surname)){
                             $order = ["surname","name"];
                             $where = FunctionsDB::prepareWhere($filter_params, $order);
 
                             $column = ["id_borrower", "name", "surname"];
                             App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "borrower_info", null, $column, $where));
+                            
+                            FunctionsDB::countRecords("borrower_info", $where);
                             
                             App::getSmarty()->assign('formSent', 1);
                         }
@@ -121,13 +145,15 @@
                         
                         App::getSmarty()->assign('searchForm', $this->book);
                         
-                    # Get readers if searched
+                    # Get books if searched
                         if(isset($this->book->id_book) || isset($this->book->title)){
                             $order = ["title","id_book"];
                             $where = FunctionsDB::prepareWhere($filter_params, $order);
 
                             $column = ["id_book", "title"];
                             App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "book_stock", null, $column, $where));
+                            
+                            FunctionsDB::countRecords("book_stock", $where);
                             
                             App::getSmarty()->assign('formSent', 1);
                         }
