@@ -27,6 +27,10 @@
                 <input type="submit" value="Szukaj" class="primary">
                 <a href="{url action = 'borrowedList'}" class="button">Wyczyść filtr</a>
             </form>    
+            
+            <p>
+                <a href="{url action = 'bookBorrow'}" class="button primary icon solid fa-plus">Wypożycz książkę</a>
+            </p>
         </section>
     
         <section class="table-wrapper" style = "padding-top: 1em; padding-bottom: 1em">
