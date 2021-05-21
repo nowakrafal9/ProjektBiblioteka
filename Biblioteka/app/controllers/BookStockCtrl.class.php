@@ -2,15 +2,14 @@
     namespace app\controllers;
     
     use core\App;
+    use core\FunctionsDB;
     use core\Utils;
     use core\ParamUtils;
-    use core\SessionUtils;
+    
     use app\forms\BookStockForm;
     
 class BookStockCtrl {
     private $book;
-    private $records;
-    private $numRecords;
 
     public function __construct() { $this->book = new BookStockForm(); }
     
@@ -21,31 +20,7 @@ class BookStockCtrl {
                       
         return !App::getMessages()->isError();
     }
-    
-    public function countRecords($table, &$where){
-        try {
-            $this->numRecords = App::getDB()->count($table, $where);
-        } catch (\PDOException $e) {
-            Utils::addErrorMessage('Wystąpił błąd podczas liczenia rekordów');
-            if (App::getConf()->debug){ Utils::addErrorMessage($e->getMessage()); }
-        }
-
-        App::getSmarty()->assign('numRecords', $this->numRecords);
-    }
-        
-    public function prepareWhere($filter_params, $order) {
-        $num_params = sizeof($filter_params);
-
-        if ($num_params > 1) {
-            $where = ["AND" => &$filter_params];
-        } else {
-            $where = &$filter_params;
-        }
-        $where ["ORDER"] = $order;
-
-        return $where;
-    }
-        
+       
     public function action_bookStock(){ 
         # Get params
             $this -> getForm();
@@ -65,21 +40,16 @@ class BookStockCtrl {
             
         # Prepare $where for DB operation
             $order = ["id_book"];
-            $where = $this->prepareWhere($filter_params, $order);          
+            $where = FunctionsDB::prepareWhere($filter_params, $order);          
         
         # Get books in library from DB
-            try {
-                $this->records = App::getDB()->select("book_stock",["[><]book_info" => ["book_code" => "book_code"]], 
-                    ["book_stock.id_book", "book_info.title", "book_stock.borrowed"], $where);
-            } catch (\PDOException $e) {
-                Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-                if (App::getConf()->debug)
-                    Utils::addErrorMessage($e->getMessage());
-            }
-            App::getSmarty()->assign('records', $this->records);
+            $join =["[><]book_info" => ["book_code" => "book_code"]];
+            $column = ["book_stock.id_book", "book_info.title", "book_stock.borrowed"];
             
+            App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "book_stock", $join, $column, $where));
+                        
         # Get number of books in library
-            $this->countRecords("book_stock", $where); 
+            FunctionsDB::countRecords("book_stock", $where); 
                   
         # Redirect to page
             $this->generateView();

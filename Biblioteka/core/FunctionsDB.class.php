@@ -1,7 +1,6 @@
 <?php
     namespace core;
 
-
     class FunctionsDB {
         public static function getRecords($mode, $table, $join, $column, $where) {
             try {

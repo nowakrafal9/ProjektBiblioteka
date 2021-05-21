@@ -2,16 +2,14 @@
     namespace app\controllers;
     
     use core\App;
+    use core\FunctionsDB;
     use core\Utils;
     use core\ParamUtils;
-    use core\SessionUtils;
     
     use app\forms\ReaderListForm;
   
     class ReaderListCtrl {
         private $reader;
-        private $records;
-        private $numRecords;
         
         public function __construct() { $this->reader = new ReaderListForm(); }
         
@@ -28,41 +26,6 @@
 
             return !App::getMessages()->isError();
         }   
-        
-        public function countRecords($table, &$where){
-            try {
-                $this->numRecords = App::getDB()->count($table, $where);
-            } catch (\PDOException $e) {
-                Utils::addErrorMessage('Wystąpił błąd podczas liczenia rekordów');
-                if (App::getConf()->debug){ Utils::addErrorMessage($e->getMessage()); }
-            }
-            
-            App::getSmarty()->assign('numRecords', $this->numRecords);
-        }
-        
-        public function prepareWhere($filter_params, $order) {
-            $num_params = sizeof($filter_params);
-                
-            if ($num_params > 1) {
-                $where = ["AND" => &$filter_params];
-            } else {
-                $where = &$filter_params;
-            }
-            $where ["ORDER"] = $order;
-            
-            return $where;
-        }
-        
-        public function getRecords($mode, $table, $join, $column, $where) {
-            try {
-                if($mode == "readerInfo"){ $this->records = App::getDB()->get($table,$column,$where); }
-            } catch (\PDOException $e) {
-                Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-                if (App::getConf()->debug) { Utils::addErrorMessage($e->getMessage()); }
-            }        
-            
-            return $this->records;
-        }
         
         public function action_readerList(){
             # Get params
@@ -83,21 +46,14 @@
                 
             # Prepare $where for DB operation
                 $order = ["surname","name"];
-                $where = $this->prepareWhere($filter_params, $order);
+                $where = FunctionsDB::prepareWhere($filter_params, $order);
             
             # Get readers list from DB
-                try {
-                    $this->records = App::getDB()->select("borrower_info",
-                        ["id_borrower", "name", "surname"],
-                        $where);
-                } catch (\PDOException $e) {
-                    Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-                    if (App::getConf()->debug){ Utils::addErrorMessage($e->getMessage());}
-                }
-                App::getSmarty()->assign('records', $this->records);
-                
+                $column = ["id_borrower", "name", "surname"];
+                App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "borrower_info", null, $column, $where));
+                       
             # Get number of readers registered
-                $this->countRecords("borrower_info", $where); 
+                FunctionsDB::countRecords("borrower_info", $where); 
                 
             # Redirect to page
                 App::getSmarty()->assign('pageMode',"readerList"); 
@@ -111,32 +67,22 @@
             # Get reader personal info
                 $where = ["id_borrower" => $this->reader->id_reader];
                 
-                App::getSmarty()->assign('name', $this->getRecords("readerInfo", "borrower_info", null, "name", $where));
-                App::getSmarty()->assign('surname', $this->getRecords("readerInfo", "borrower_info", null, "surname", $where));
-                App::getSmarty()->assign('city', $this->getRecords("readerInfo", "borrower_info", null, "city", $where));
-                App::getSmarty()->assign('address', $this->getRecords("readerInfo", "borrower_info", null, "address", $where));
-                App::getSmarty()->assign('postal_code', $this->getRecords("readerInfo", "borrower_info", null, "postal_code", $where));
-                App::getSmarty()->assign('phone_number', $this->getRecords("readerInfo", "borrower_info", null, "phone_number", $where));
-                App::getSmarty()->assign('email', $this->getRecords("readerInfo", "borrower_info", null, "email", $where));
+                App::getSmarty()->assign('name', FunctionsDB::getRecords("get", "borrower_info", null, "name", $where));
+                App::getSmarty()->assign('surname', FunctionsDB::getRecords("get", "borrower_info", null, "surname", $where));
+                App::getSmarty()->assign('city', FunctionsDB::getRecords("get", "borrower_info", null, "city", $where));
+                App::getSmarty()->assign('address', FunctionsDB::getRecords("get", "borrower_info", null, "address", $where));
+                App::getSmarty()->assign('postal_code', FunctionsDB::getRecords("get", "borrower_info", null, "postal_code", $where));
+                App::getSmarty()->assign('phone_number', FunctionsDB::getRecords("get", "borrower_info", null, "phone_number", $where));
+                App::getSmarty()->assign('email', FunctionsDB::getRecords("get", "borrower_info", null, "email", $where));
                     
             # Get borrowed books by reader
-                try {
-                    $this->records = App::getDB()->select("borrowed_books", 
-                        ["[><]book_stock" => ["id_book" => "id_book"]],
-                        ["borrowed_books.id_book", 
-                         "borrowed_books.id_borrower", 
-                         "borrowed_books.return_date", 
-                         "book_stock.title"], 
-                        ["id_borrower" => $this->reader->id_reader]);
-                } catch (\PDOException $e) {
-                    Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-                    if (App::getConf()->debug){ Utils::addErrorMessage($e->getMessage()); }
-                }    
-                App::getSmarty()->assign('records', $this->records);   
-            
+                $join =["[><]book_stock" => ["id_book" => "id_book"]];
+                $column = ["borrowed_books.id_book", "borrowed_books.id_borrower", "borrowed_books.return_date", "book_stock.title"];
+                App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "borrowed_books", $join, $column, $where));
+                       
             # Get number of books borrowed by reader
                 $where["id_borrower~"] = $this->reader->id_reader;
-                $this->countRecords("borrowed_books", $where); 
+                FunctionsDB::countRecords("borrowed_books", $where); 
             
             # Redirect to page
                 App::getSmarty()->assign('dateToday', date("Y-m-d"));
