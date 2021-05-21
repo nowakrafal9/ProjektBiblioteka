@@ -9,14 +9,22 @@
         
     use app\forms\BookInfoForm;
     
-    class BookInfoCtrl {
+    class BookCtrl {
         private $book;
         
         public function __construct() { $this->book = new BookInfoForm(); }
         
-        public function getForm() {
-            $this->book->title = ParamUtils::getFromRequest('title');
-
+        public function getForm($source) {
+            if($source == "bookList"){
+                $this->book->title = ParamUtils::getFromRequest('title');
+            }
+            
+            if($source == "bookStock"){
+                $this->book->book_code = ParamUtils::getFromRequest('book_code');
+                $this->book->title = ParamUtils::getFromRequest('title');
+                $this->book->borrowed = ParamUtils::getFromRequest('borrowed');
+            }
+            
             return !App::getMessages()->isError();
         }
         
@@ -28,7 +36,7 @@
                
         public function action_bookList(){   
             # Get params
-                $this -> getForm();
+                $this -> getForm("bookList");
             
             # Set filter params
                 $filter_params = [];
@@ -77,6 +85,41 @@
                 $this->generateView();
         }
         
+        public function action_bookStock(){ 
+            # Get params
+                $this -> getForm("bookStock");
+
+            # Set filter params    
+                $filter_params = [];
+                if (isset($this->book->book_code) && strlen($this->book->book_code) > 0) {
+                    $filter_params['id_book[~]'] = $this->book->book_code.'%';
+                }
+                if (isset($this->book->title) && strlen($this->book->title) > 0) {
+                    $filter_params['title[~]'] = $this->book->title.'%';
+                }
+                if (isset($this->book->borrowed) && strlen($this->book->borrowed) > 0) {
+                    $filter_params['borrowed[~]'] = $this->book->borrowed.'%';
+                }
+                App::getSmarty()->assign('searchForm', $this->book);
+
+            # Prepare $where for DB operation
+                $order = ["id_book"];
+                $where = FunctionsDB::prepareWhere($filter_params, $order);          
+
+            # Get books in library from DB
+                $join =["[><]book_info" => ["book_code" => "book_code"]];
+                $column = ["book_stock.id_book", "book_info.title", "book_stock.borrowed"];
+
+                App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "book_stock", $join, $column, $where));
+
+            # Get number of books in library
+                FunctionsDB::countRecords("book_stock", $where); 
+
+            # Redirect to page
+                App::getSmarty()->assign('pageMode',"bookStock"); 
+                $this->generateView();
+        }
+    
         public function generateView() {
             App::getSmarty()->assign('user', SessionUtils::loadObject("user", true));
             App::getSmarty()->display('Book.tpl');

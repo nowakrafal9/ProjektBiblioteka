@@ -9,7 +9,7 @@
         
     use app\forms\ReaderListForm;
   
-    class ReaderListCtrl {
+    class ReaderCtrl {
         private $reader;
         
         public function __construct() { $this->reader = new ReaderListForm(); }
