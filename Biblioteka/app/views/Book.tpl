@@ -41,15 +41,15 @@
         
     {if {$pageMode} == "bookInfo"}
         <section style="padding-top: 1em; padding-bottom: 1em">
-            <h3 class="content">{$title}</h3>   
+            <h3 class="content">{$book["title"]}</h3>   
             <p>
-                <strong>Kod tytułu:</strong> {$book_code}
+                <strong>Kod tytułu:</strong> {$book["book_code"]}
             </p>
             <p>
-                <strong>Autor:</strong> {$name} {$surname} <br/>             
-                <strong>Wydawnictwo:</strong> {$publisher} <br/>
-                <strong>Gatunek:</strong> {$genre} <br/>
-                <strong>Ilość stron:</strong> {$pages} <br/>
+                <strong>Autor:</strong> {$book["name"]} {$book["surname"]} <br/>             
+                <strong>Wydawnictwo:</strong> {$book["publisher"] } <br/>
+                <strong>Gatunek:</strong> {$book["genre"] } <br/>
+                <strong>Ilość stron:</strong> {$book["pages"]} <br/>
             </p>
             <p>
                 <strong>Ilość egzemplarzy:</strong> {$allBooks}<br/>

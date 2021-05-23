@@ -77,23 +77,29 @@
             # Get borrowed book info
                 $where = ["borrowed_books.id_book" => $this->book->id_book];
                 
-                $join = ["[><]book_stock" => ["book_stock.id_book" => "id_book"], 
-                         "[><]borrower_info" => ["borrower_info.id_borrower" => "id_borrower"]];        
-                App::getSmarty()->assign('id_book', FunctionsDB::getRecords("get", "borrowed_books", $join, "borrowed_books.id_book", $where));
-                App::getSmarty()->assign('title', FunctionsDB::getRecords("get", "borrowed_books", $join, "book_stock.title", $where));
-                App::getSmarty()->assign('borrow_date', FunctionsDB::getRecords("get", "borrowed_books", $join, "borrowed_books.borrow_date", $where));
-                App::getSmarty()->assign('return_date', FunctionsDB::getRecords("get", "borrowed_books", $join, "borrowed_books.return_date", $where));
+                $join = ["[><]book_stock" => ["book_stock.id_book" => "id_book"]];       
+                $column = ["borrowed_books.id_book", "book_stock.title", "borrowed_books.borrow_date", "borrowed_books.return_date"];
+                App::getSmarty()->assign('book', FunctionsDB::getRecords("get", "borrowed_books", $join, $column, $where)); 
                 
-                $join = ["[><]borrower_info" => ["borrower_info.id_borrower" => "id_borrower"]];            
-                App::getSmarty()->assign('id_borrower', FunctionsDB::getRecords("get", "borrowed_books", $join, "borrowed_books.id_borrower", $where));
+                $returnDate = FunctionsDB::getRecords("get", "borrowed_books", $join, "borrowed_books.return_date", $where);
+                $today = date("Y-m-d");
+                $timeLeft = round((strtotime($returnDate) - strtotime($today))/ (60 * 60 * 24));
+                if($timeLeft >= 0){
+                    App::getSmarty()->assign('afterDeadline', 'no');
+                    if($timeLeft == 1){ App::getSmarty()->assign('timeLeft', $timeLeft." dzień"); }
+                    else{ App::getSmarty()->assign('timeLeft', $timeLeft." dni"); }
+                } else{
+                    if($timeLeft == -1){ App::getSmarty()->assign('timeLeft', ($timeLeft * (-1))." dzień"); }
+                    else{ App::getSmarty()->assign('timeLeft', ($timeLeft * (-1))." dni"); }        
+                }
                 
                 $join = ["[><]borrower_info" => ["borrowed_books.id_borrower" => "id_borrower"]]; 
-                App::getSmarty()->assign('name', FunctionsDB::getRecords("get", "borrowed_books", $join, "borrower_info.name", $where));
-                App::getSmarty()->assign('surname', FunctionsDB::getRecords("get", "borrowed_books", $join, "borrower_info.surname", $where));
-                App::getSmarty()->assign('phone_number', FunctionsDB::getRecords("get", "borrowed_books", $join, "borrower_info.phone_number", $where));
+                $column = ["borrowed_books.id_borrower", "borrower_info.name", "borrower_info.surname", "borrower_info.phone_number"];
+                App::getSmarty()->assign('reader', FunctionsDB::getRecords("get", "borrowed_books", $join, $column, $where));
              
+                
             # Redirect to page
-                App::getSmarty()->assign('pageMode',"borrowedInfo");
+                App::getSmarty()->assign('pageMode',"borrowedReturn");
                 $this->generateView();
         }
         

@@ -21,12 +21,12 @@
                         <div class="row gtr-uniform">
                             <div class="col-4 col-12-xsmall">
                                 <strong>Kod książki:</strong>
-                                <input type="text" name="id_book" id="id_book" value="{$id_book}" placeholder="Id książke" disabled="">
+                                <input type="text" name="id_book" id="id_book" value="{$book["id_book"]}" placeholder="Id książke" disabled="">
                             </div>
 
                             <div class="col-8 col-12-xsmall">
                                 <strong>Tytuł:</strong>
-                                <input type="text" name="title" id="title" value="{$title}" placeholder="Tytuł" disabled>
+                                <input type="text" name="title" id="title" value="{$book["title"]}" placeholder="Tytuł" disabled>
                             </div>
                         </div>
                     </form>
@@ -53,7 +53,7 @@
 
                             <div class="col-12">
                                 <input type="submit" value="Szukaj" class="primary">
-                                <a href="{url action = 'bookBorrow'}/{$id_book}" class="button">Wyczyść filtr</a>
+                                <a href="{url action = 'bookBorrow'}/{$book["id_book"]}" class="button">Wyczyść filtr</a>
                             </div>  
                         </div>
                     </form>
@@ -82,7 +82,7 @@
                                     <td style="width: 10%">{$r["id_borrower"]}</td> 
                                     <td style="width: 40%">{$r["surname"]}</td>
                                     <td style="width: 40%">{$r["name"]}</td>      
-                                    <td style="width: 10%" ><center><a href="{url action = 'bookBorrow'}/{$id_book}/{$r['id_borrower']}" class="button small">Wypożycz</a></center></td>  
+                                    <td style="width: 10%" ><center><a href="{url action = 'bookBorrow'}/{$book["id_book"]}/{$r['id_borrower']}" class="button small">Wypożycz</a></center></td>  
                                 </tr>
                             {/strip}
                             {/foreach}

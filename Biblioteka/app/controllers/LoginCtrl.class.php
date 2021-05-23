@@ -30,16 +30,14 @@
             if (App::getMessages()->isError()) return false;
 
             $where = ["login" => $this->form->login];
-            $pass = FunctionsDB::getRecords("get", "employee", null,"password", $where);
-            $role = FunctionsDB::getRecords("get", "employee", null,"role", $where);
-            $id_employee = FunctionsDB::getRecords("get", "employee", null,"id_employee", $where);
-            $active = FunctionsDB::getRecords("get", "employee", null,"active", $where);
+            $column = ["password", "role", "id_employee", "active"];
+            $employee = FunctionsDB::getRecords("get", "employee", null, $column, $where);
 
-            if (isset($pass) && $this->form->pass == $pass && $active == 1) { 
-                RoleUtils::addRole($role);
+            if (isset($employee["password"]) && $this->form->pass == $employee["password"] && $employee["active"] == 1) { 
+                RoleUtils::addRole($employee["role"]);
                 
                 SessionUtils::storeObject("user", new User($this->form->login, $role));
-                SessionUtils::store("id_employee", $id_employee);
+                SessionUtils::store("id_employee", $employee["id_employee"]);
             } else { Utils::addErrorMessage('Niepoprawny login lub hasło'); }
 
             return !App::getMessages()->isError();

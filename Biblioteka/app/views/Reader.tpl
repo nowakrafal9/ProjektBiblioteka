@@ -58,18 +58,18 @@
     
     {if {$pageMode} == "readerInfo"}
         <section style="padding-top: 1em; padding-bottom: 1em">    
-            <h3>{$name}, {$surname}</h3>
+            <h3>{$r["name"]}, {$r["surname"]} {if {$user->role}=="Administrator"} [<a href='#' style='color:gray'>Edytuj</a>] {/if}</h3> 
             <div class="row">       
                 <div class="col-6 col-12-small">
                     <h3>Dane kontaktowe: </h3>
                     <p>
-                        <strong>Miasto:</strong> {$city} <br/> 
-                        <strong>Adres:</strong> {$address} <br/>
-                        <strong>Kod pocztowy:</strong> {$postal_code} <br/>      
+                        <strong>Miasto:</strong> {$r["city"]} <br/> 
+                        <strong>Adres:</strong> {$r["address"]} <br/>
+                        <strong>Kod pocztowy:</strong> {$r["postal_code"]} <br/>      
                     </p>
                     <p>
-                        <strong>Telefon:</strong> {$phone_number} <br/>             
-                        <strong>Email:</strong> {if {$email} == ""}Brak{else}{$email}{/if} <br/>
+                        <strong>Telefon:</strong> {$r["phone_number"]} <br/>             
+                        <strong>Email:</strong> {if {$r["email"]} == ""}Brak{else}{$r["email"]}{/if} <br/>
                     </p>
                 </div>
 

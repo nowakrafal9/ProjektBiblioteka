@@ -69,6 +69,9 @@
                 
             # Choose path to go
                 if($book_exist && $reader_exist){
+                    $today = strtotime(date("Y-m-d"));
+                    $returnDate = date("Y-m-d", strtotime("+14 day", $today));
+
                     try{
                         # Insert info about borrowed book
                             App::getDB()->insert("borrowed_books", 
@@ -76,7 +79,7 @@
                                  "id_borrower" => $this->reader->id_reader,
                                  "id_employee" => SessionUtils::load("id_employee", true),
                                  "borrow_date" => date("Y-m-d"),
-                                 "return_date" => date("Y-m-d")
+                                 "return_date" => $returnDate,
                                 ]);
 
                         # Update status if book borrowed
@@ -93,10 +96,9 @@
                 } else if($book_exist){
                     # Get book info from DB
                         $join = ["[><]book_info" => ["book_stock.book_code" => "book_code"]];
+                        $colum =["book_stock.id_book", "book_stock.book_code", "book_stock.title"];
                         $where = ["book_stock.id_book" =>  $this->book->id_book];
-                        App::getSmarty()->assign('id_book', FunctionsDB::getRecords("get", "book_stock", $join, "book_stock.id_book", $where));
-                        App::getSmarty()->assign('book_code', FunctionsDB::getRecords("get", "book_stock", $join, "book_stock.book_code", $where));
-                        App::getSmarty()->assign('title', FunctionsDB::getRecords("get", "book_stock", $join, "book_stock.title", $where));
+                        App::getSmarty()->assign('book', FunctionsDB::getRecords("get", "book_stock", $join, $colum, $where));
                     
                     # Get params
                         $this->getForm("readerForm");

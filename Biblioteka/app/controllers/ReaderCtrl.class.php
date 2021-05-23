@@ -28,7 +28,7 @@
             return !App::getMessages()->isError();
         }   
         
-        public function action_readerList(){
+        public function action_readerList(){        
             # Get params
                 $this->getForm();
             
@@ -67,14 +67,7 @@
             
             # Get reader personal info
                 $where = ["id_borrower" => $this->reader->id_reader];
-                
-                App::getSmarty()->assign('name', FunctionsDB::getRecords("get", "borrower_info", null, "name", $where));
-                App::getSmarty()->assign('surname', FunctionsDB::getRecords("get", "borrower_info", null, "surname", $where));
-                App::getSmarty()->assign('city', FunctionsDB::getRecords("get", "borrower_info", null, "city", $where));
-                App::getSmarty()->assign('address', FunctionsDB::getRecords("get", "borrower_info", null, "address", $where));
-                App::getSmarty()->assign('postal_code', FunctionsDB::getRecords("get", "borrower_info", null, "postal_code", $where));
-                App::getSmarty()->assign('phone_number', FunctionsDB::getRecords("get", "borrower_info", null, "phone_number", $where));
-                App::getSmarty()->assign('email', FunctionsDB::getRecords("get", "borrower_info", null, "email", $where));
+                App::getSmarty()->assign('r', FunctionsDB::getRecords("get", "borrower_info", null, "*", $where));
                     
             # Get borrowed books by reader
                 $join =["[><]book_stock" => ["id_book" => "id_book"]];

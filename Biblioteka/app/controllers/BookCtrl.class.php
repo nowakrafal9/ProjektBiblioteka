@@ -67,15 +67,10 @@
             
             # Get book info    
                 $join = ["[><]author_info" => ["author" => "id_author"]];
+                $colum = ["book_info.book_code", "book_info.title", "book_info.pages", "author_info.name", 
+                          "author_info.surname", "book_info.genre", "book_info.publisher"];
                 $where = ["id_book" => $this->book->id_book];
-                
-                App::getSmarty()->assign('book_code', FunctionsDB::getRecords("get", "book_info", $join,"book_info.book_code",$where));
-                App::getSmarty()->assign('title', FunctionsDB::getRecords("get", "book_info", $join,"book_info.title",$where)); 
-                App::getSmarty()->assign('pages', FunctionsDB::getRecords("get", "book_info", $join,"book_info.pages",$where)); 
-                App::getSmarty()->assign('name', FunctionsDB::getRecords("get", "book_info", $join,"author_info.name",$where)); 
-                App::getSmarty()->assign('surname', FunctionsDB::getRecords("get", "book_info", $join,"author_info.surname",$where)); 
-                App::getSmarty()->assign('genre', FunctionsDB::getRecords("get", "book_info", $join,"book_info.genre",$where)); 
-                App::getSmarty()->assign('publisher', FunctionsDB::getRecords("get", "book_info", $join,"book_info.publisher",$where)); 
+                App::getSmarty()->assign('book', FunctionsDB::getRecords("get", "book_info", $join, $colum,$where));
                 
             # Get number of books
                 $book_code = FunctionsDB::getRecords("get", "book_info",null ,"book_code",$where);
