@@ -36,7 +36,7 @@
             if (isset($employee["password"]) && $this->form->pass == $employee["password"] && $employee["active"] == 1) { 
                 RoleUtils::addRole($employee["role"]);
                 
-                SessionUtils::storeObject("user", new User($this->form->login, $role));
+                SessionUtils::storeObject("user", new User($this->form->login, $employee["role"]));
                 SessionUtils::store("id_employee", $employee["id_employee"]);
             } else { Utils::addErrorMessage('Niepoprawny login lub hasło'); }
 
