@@ -1,8 +1,8 @@
 <?php
     namespace app\forms;
 
-    class BookStockForm {
+    class BookStockEditForm {
+        public $id_book;
         public $book_code;
         public $title;
-        public $borrowed;
     }

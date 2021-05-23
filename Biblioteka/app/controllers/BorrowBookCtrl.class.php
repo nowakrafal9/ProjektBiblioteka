@@ -86,6 +86,9 @@
                             App::getDB()->update("book_stock", 
                                 ["borrowed" => 1 ], 
                                 ["id_book" => $this->book->id_book]);
+                        
+                        # Info about success
+                            Utils::addInfoMessage('Wypożyczono książkę o kodzie '.$this->book->id_book);
                     } catch (\PDOException $e) {
                         Utils::addErrorMessage('Wystąpił błąd podczas modyfikacji rekordów');
                         if (App::getConf()->debug){ Utils::addErrorMessage($e->getMessage()); }

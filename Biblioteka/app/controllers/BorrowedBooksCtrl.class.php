@@ -117,6 +117,7 @@
                 }    
                           
             # Redirect to borrowedList
+                Utils::addInfoMessage("Zwrócono książkę o kodzie ".$this->book->id_book);
                 App::getRouter()->forwardTo("borrowedList");
         }
         

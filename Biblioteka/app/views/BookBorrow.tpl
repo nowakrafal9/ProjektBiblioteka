@@ -4,7 +4,7 @@
     
     {if {$pageMode} == "bookBorrowed"}
         <section style = "padding-top: 1em; padding-bottom: 0;">
-            <h3>Wypożyczono książkę</h3>
+            {include file="messages.tpl"}
             
             <a href="{url action = 'borrowedList'}" class="button primary">Powrót</a>
         </section>  
@@ -34,7 +34,7 @@
                             
                 <div class="col-6 col-12-small">
                     <h3>Wyszukaj czytelnika:</h3> 
-                    <form>
+                    <form action ="{url action="bookBorrow"}/{$book["id_book"]}" method="post">
                         <div class="row gtr-uniform">
                             <div class="col-6 col-12-xsmall">
                                 <strong>Imię:</strong>
@@ -102,7 +102,7 @@
             <div class="row">       
                 <div class="col-6 col-12-small">
                     <h3>Wyszukaj książkę:</h3> 
-                    <form>
+                    <form action="{url action="bookBorrow"}" method="post">
                         <div class="row gtr-uniform">
                             <div class="col-4 col-12-xsmall">
                                 <strong>Kod książki:</strong>

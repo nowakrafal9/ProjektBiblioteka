@@ -41,8 +41,20 @@
                             <li><a href="{url action = 'main'}">Strona główna</a></li>
                             <li><a href="{url action = 'readerList'}">Lista czytelników</a></li>
                             <li><a href="{url action = 'bookList'}">Informacje o książce</a></li>
-                            <li><a href="{url action = 'borrowedList'}">Wypożyczone książki</a></li>
-                            <li><a href="{url action = 'bookStock'}">Lista książek</a></li>   
+                            <li>
+                                <span class="opener">Wypożyczone książki</span>
+                                <ul>
+                                    <li><a href="{url action = 'borrowedList'}">Lista wypożyczonych książek</a></li>
+                                    <li><a href="{url action = 'bookBorrow'}">Wypożycz książke</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="opener">Lista książek</span>
+                                <ul>
+                                    <li><a href="{url action = 'bookStock'}">Lista książek</a></li>
+                                    <li><a href="{url action = 'bookAdd'}">Dodaj książkę</a></li>
+                                </ul>
+                            </li> 
                         </ul>
                     </nav>
                            

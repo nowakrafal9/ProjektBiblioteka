@@ -20,14 +20,6 @@
             <input type="submit" value="Zaloguj się" class="primary"">
         </form>  
         
-        {if $msgs->isMessage()}
-            <ul>
-                {foreach $msgs->getMessages() as $msg}
-                    {strip}
-                        <strong style="color:#f56a6a"><li>{$msg->text}</li></strong>
-                    {/strip}
-                {/foreach}
-            </ul>
-        {/if}
+        {include file='messages.tpl'}
     </section>
 {/block}
