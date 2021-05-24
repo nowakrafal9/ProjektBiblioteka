@@ -66,8 +66,7 @@
                 App::getSmarty()->assign('dateToday', date("Y-m-d"));
                 
             # Redirect to page
-                App::getSmarty()->assign('pageMode',"borrowedList");
-                $this->generateView();
+                $this->generateView("Borrowed_borrowedList.tpl");
         }
         
         public function action_borrowedReturn(){ 
@@ -99,8 +98,7 @@
              
                 
             # Redirect to page
-                App::getSmarty()->assign('pageMode',"borrowedReturn");
-                $this->generateView();
+                $this->generateView("Borrowed_borrowedReturn.tpl");
         }
         
         public function action_bookReturn(){ 
@@ -121,8 +119,9 @@
                 App::getRouter()->forwardTo("borrowedList");
         }
         
-        public function generateView() {
+        public function generateView($page) {
             App::getSmarty()->assign('user', SessionUtils::loadObject("user", true));
-            App::getSmarty()->display("Borrowed.tpl");
+            
+            App::getSmarty()->display($page);
         }
     }

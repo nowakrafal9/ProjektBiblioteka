@@ -66,6 +66,8 @@
         
         public function generateView() {
             App::getSmarty()->assign('user', SessionUtils::loadObject("user", true));
-            App::getSmarty()->display('BookAdd.tpl');
+            App::getSmarty()->assign('form', $this->book);
+            
+            App::getSmarty()->display('Book_addBook.tpl');
         }
     }

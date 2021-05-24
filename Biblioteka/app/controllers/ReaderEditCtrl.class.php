@@ -2,7 +2,6 @@
     namespace app\controllers;
 
     use core\App;
-    use core\FunctionsDB;
     use core\Utils;
     use core\ParamUtils;
     use core\SessionUtils;
@@ -128,7 +127,7 @@
             App::getSmarty()->assign('pageMode', $this->pageMode);
             App::getSmarty()->assign('form', $this->reader);
             App::getSmarty()->assign('user', SessionUtils::loadObject("user", true));
-            App::getSmarty()->display('ReaderEdit.tpl');
+            App::getSmarty()->display('Reader_edit.tpl');
         }
         
     }

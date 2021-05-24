@@ -57,8 +57,7 @@
                 FunctionsDB::countRecords("book_stock", $where);  
                        
            # Redirect to page
-                App::getSmarty()->assign('pageMode',"bookList");
-                $this->generateView();
+                 $this->generateView("Book_bookList.tpl");
         }
         
         public function action_bookInfo(){
@@ -81,8 +80,7 @@
                 App::getSmarty()->assign('borrowedBooks', FunctionsDB::countRecords("book_stock", $where)); 
                 
             # Redirect to page
-                App::getSmarty()->assign('pageMode',"bookInfo"); 
-                $this->generateView();
+                $this->generateView("Book_bookInfo.tpl");
         }
         
         public function action_bookStock(){ 
@@ -116,12 +114,12 @@
                 FunctionsDB::countRecords("book_stock", $where); 
 
             # Redirect to page
-                App::getSmarty()->assign('pageMode',"bookStock"); 
-                $this->generateView();
+                $this->generateView("Book_bookStock.tpl");
         }
     
-        public function generateView() {
+        public function generateView($page) {
             App::getSmarty()->assign('user', SessionUtils::loadObject("user", true));
-            App::getSmarty()->display('Book.tpl');
+            
+            App::getSmarty()->display($page);
         }
     }

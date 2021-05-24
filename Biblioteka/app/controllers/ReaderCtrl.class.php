@@ -57,8 +57,7 @@
                 FunctionsDB::countRecords("borrower_info", $where); 
                 
             # Redirect to page
-                App::getSmarty()->assign('pageMode',"readerList"); 
-                $this->generateView();
+                $this->generateView("Reader_readerList.tpl");
         }
         
         public function action_readerInfo(){
@@ -79,14 +78,13 @@
                 FunctionsDB::countRecords("borrowed_books", $where); 
             
             # Redirect to page
-                App::getSmarty()->assign('dateToday', date("Y-m-d"));
-                App::getSmarty()->assign('pageMode',"readerInfo"); 
-                
-                $this->generateView();
+                App::getSmarty()->assign('dateToday', date("Y-m-d")); 
+                $this->generateView("Reader_readerInfo.tpl");
         }
         
-        public function generateView(){
+        public function generateView($page){
             App::getSmarty()->assign('user', SessionUtils::loadObject("user", true));
-            App::getSmarty()->display('Reader.tpl');
+            
+            App::getSmarty()->display($page);
         }
     }

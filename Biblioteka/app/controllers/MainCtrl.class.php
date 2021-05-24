@@ -12,6 +12,7 @@
         
         public function generateView() { 
             App::getSmarty()->assign('user', SessionUtils::loadObject("user", true));
+            
             App::getSmarty()->display('Main.tpl');
         }
     }

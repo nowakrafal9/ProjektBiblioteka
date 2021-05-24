@@ -1,7 +1,9 @@
 {extends file = "main_template.tpl"}
 
 {block name=content}
+    
     <section style = "padding-top: 1em; padding-bottom: 0;">
+        
         <div class="row">                    
             <div class="col-6 col-12-small">
                 {if {$pageMode} == "readerEdit"}
@@ -64,9 +66,13 @@
                 </form>
             </div>                         
         </div>
+                
     </section>
                             
     <section style = "padding-top: 1em; padding-bottom: 0;">
+        
         {include file = "messages.tpl"}
+        
     </section>
+        
 {/block}

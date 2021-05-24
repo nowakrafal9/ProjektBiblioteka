@@ -10,7 +10,7 @@
     use app\forms\BorrowedBooksForm;
     use app\forms\ReaderListForm;
     
-    class BorrowBookCtrl {
+    class BookBorrowCtrl {
         private $book;
         private $reader;
         
@@ -94,8 +94,8 @@
                         if (App::getConf()->debug){ Utils::addErrorMessage($e->getMessage()); }
                     }
                     
-                    # Choose page view mode
-                        App::getSmarty()->assign('pageMode',"bookBorrowed");
+                    # Redirect to page
+                        $this->generateView("BookBorrow_borrowed.tpl");
                 } else if($book_exist){
                     # Get book info from DB
                         $join = ["[><]book_info" => ["book_stock.book_code" => "book_code"]];
@@ -132,8 +132,8 @@
                             App::getSmarty()->assign('formSent', 1);
                         }
                         
-                    # Choose page view mode
-                        App::getSmarty()->assign('pageMode',"selectBorrower");
+                    # Redirect to page
+                        $this->generateView("BookBorrow_selectBorrower.tpl");
                 } else{
                     # Get params
                         $this->getForm("bookForm");
@@ -163,16 +163,14 @@
                             App::getSmarty()->assign('formSent', 1);
                         }
                         
-                    # Choose page view mode
-                        App::getSmarty()->assign('pageMode',"selectBook");
+                    # Redirect to page
+                        $this->generateView("BookBorrow_selectBook.tpl");
                 }
-
-            # Redirect to page
-                $this->generateView();
         }
         
-        public function generateView() {
+        public function generateView($page) {
             App::getSmarty()->assign('user', SessionUtils::loadObject("user", true));
-            App::getSmarty()->display("BookBorrow.tpl");
+            
+            App::getSmarty()->display($page);
         }
     }
