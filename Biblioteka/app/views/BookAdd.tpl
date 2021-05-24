@@ -5,7 +5,7 @@
         <div class="row">                    
             <div class="col-6 col-12-small">
                 <h3>Dodaj książkę</h3> 
-                <form action="{$conf->action_root}bookSave" method="post">
+                <form action="{url action = "bookSave"}" method="post">
                     <div class="row gtr-uniform">
                         <div class="col-4 col-12-xsmall">
                             <strong>Kod książki:</strong>

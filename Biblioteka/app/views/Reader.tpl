@@ -20,7 +20,12 @@
 
                 <input type="submit" value="Szukaj" class="primary">
                 <a href="{url action = 'readerList'}" class="button">Wyczyść filtr</a>
-            </form>    
+            </form> 
+            {if {$user->role}=="Administrator"}
+                <p>
+                    <a href="{url action = 'readerAdd'}" class="button primary icon solid fa-plus">Dodaj czytelnika</a>
+                </p>
+            {/if}
         </section>
 
         <section class="table-wrapper" style = "padding-top: 1em; padding-bottom: 1em">
@@ -58,7 +63,7 @@
     
     {if {$pageMode} == "readerInfo"}
         <section style="padding-top: 1em; padding-bottom: 1em">    
-            <h3>{$r["name"]}, {$r["surname"]} {if {$user->role}=="Administrator"} [<a href='#' style='color:gray'>Edytuj</a>] {/if}</h3> 
+            <h3>{$r["name"]}, {$r["surname"]} {if {$user->role}=="Administrator"} [<a href='{url action = "readerEdit"}/{$r["id_borrower"]}' style='color:#9a9a9a'>Edytuj</a>] {/if}</h3> 
             <div class="row">       
                 <div class="col-6 col-12-small">
                     <h3>Dane kontaktowe: </h3>
