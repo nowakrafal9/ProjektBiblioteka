@@ -36,7 +36,7 @@
             </article>
 
             {if {$user->role}=="Administrator"}
-            <article onclick="location='{$conf->action_url}userList'" onmouseover="this.style.backgroundColor='#F4F4F4'" onmouseout="this.style.backgroundColor=''" style = "cursor: pointer; ">
+            <article onclick="location='{$conf->action_url}employeeList'" onmouseover="this.style.backgroundColor='#F4F4F4'" onmouseout="this.style.backgroundColor=''" style = "cursor: pointer; ">
                 <span class="icon solid fa-user-edit"></span>
                 <div class="content">
                     <h3>Zarządzaj kontami pracowników</h3>

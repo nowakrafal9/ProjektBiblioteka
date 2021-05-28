@@ -69,8 +69,8 @@
                             <li>
                                 <span class="opener">Konta pracowników</span>
                                 <ul>
-                                    <li><a href="{url action = 'userList'}">Lista pracowników</a></li>
-                                    <li><a href="{url action = 'userAdd'}">Dodaj pracownika</a></li>
+                                    <li><a href="{url action = 'employeeList'}">Lista pracowników</a></li>
+                                    <li><a href="{url action = 'employeeAdd'}">Dodaj pracownika</a></li>
                                 </ul>
                             </li> 
                             {/if}

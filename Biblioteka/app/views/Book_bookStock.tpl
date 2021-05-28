@@ -26,7 +26,9 @@
             <input type="submit" value="Szukaj" class="primary">
             <a href="{url action = 'bookStock'}" class="button">Wyczyść filtr</a>
         </form> 
-        
+         <p>
+            <a href="{url action = 'bookAdd'}" class="button primary icon solid fa-plus">Dodaj książkę</a>
+        </p>
     </section>
 
     <section class="table-wrapper" style = "padding-top: 1em; padding-bottom: 1em">

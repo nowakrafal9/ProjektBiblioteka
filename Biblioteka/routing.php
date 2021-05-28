@@ -40,4 +40,10 @@
         Utils::addRoute('bookBorrow', 'BookBorrowCtrl', ['Pracownik', "Administrator"]);
         
     # Employee accounts info
-        Utils::addRoute('userList', 'UserCtrl', ["Administrator"]);
+        Utils::addRoute('employeeList', 'EmployeeCtrl', ["Administrator"]);
+        Utils::addRoute('employeeInfo', 'EmployeeCtrl', ["Administrator"]);
+        
+    # Employee add/edit
+        Utils::addRoute('employeeAdd', 'EmployeeEditCtrl', ["Administrator"]);
+        Utils::addRoute('employeeEdit', 'EmployeeEditCtrl', ["Administrator"]);
+        Utils::addRoute('employeeSave', 'EmployeeEditCtrl', ["Administrator"]);
