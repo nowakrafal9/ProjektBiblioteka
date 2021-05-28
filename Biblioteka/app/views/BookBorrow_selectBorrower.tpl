@@ -11,12 +11,12 @@
                     <div class="row gtr-uniform">
                         <div class="col-4 col-12-xsmall">
                             <strong>Kod książki:</strong>
-                            <input type="text" name="id_book" id="id_book" value="{$book["id_book"]}" placeholder="Id książke" disabled="">
+                            <input type="text" name="id_book" id="id_book" value="{$book["id_book"]}" placeholder="Id książke" disabled style="background: #eeeeee">
                         </div>
 
                         <div class="col-8 col-12-xsmall">
                             <strong>Tytuł:</strong>
-                            <input type="text" name="title" id="title" value="{$book["title"]}" placeholder="Tytuł" disabled>
+                            <input type="text" name="title" id="title" value="{$book["title"]}" placeholder="Tytuł" disabled style="background: #eeeeee">
                         </div>
                     </div>
                 </form>

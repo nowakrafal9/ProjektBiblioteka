@@ -39,7 +39,17 @@
                         </header>
                         <ul>
                             <li><a href="{url action = 'main'}">Strona główna</a></li>
+                            {if {$user->role}=="Pracownik"}
                             <li><a href="{url action = 'readerList'}">Lista czytelników</a></li>
+                            {else}
+                            <li>
+                                <span class="opener">Lista czytelników</span>
+                                <ul>
+                                    <li><a href="{url action = 'readerList'}">Lista czytelników</a></li>
+                                    <li><a href="{url action = 'readerAdd'}">Dodaj czytelnika</a></li>
+                                </ul>
+                            </li> 
+                            {/if}
                             <li><a href="{url action = 'bookList'}">Informacje o książce</a></li>
                             <li>
                                 <span class="opener">Wypożyczone książki</span>
@@ -55,6 +65,15 @@
                                     <li><a href="{url action = 'bookAdd'}">Dodaj książkę</a></li>
                                 </ul>
                             </li> 
+                            {if {$user->role}=="Administrator"}
+                            <li>
+                                <span class="opener">Konta pracowników</span>
+                                <ul>
+                                    <li><a href="{url action = 'userList'}">Lista pracowników</a></li>
+                                    <li><a href="{url action = 'userAdd'}">Dodaj pracownika</a></li>
+                                </ul>
+                            </li> 
+                            {/if}
                         </ul>
                     </nav>
                            

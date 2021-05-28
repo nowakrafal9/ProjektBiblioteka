@@ -14,6 +14,12 @@
         
         public function __construct() { $this->book = new BookStockEditForm(); }
         
+        public function getFromURL() {
+            $this->book->id_book = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
+            
+            return !App::getMessages()->isError();
+        }
+        
         public function validateSave() {
             $this->book->id_book = ParamUtils::getFromRequest('id_book', true, 'Błędne wywołanie aplikacji');
             $this->book->book_code = ParamUtils::getFromRequest('book_code', true, 'Błędne wywołanie aplikacji');
@@ -40,6 +46,21 @@
         
         public function action_bookAdd() {
             $this->generateView();
+        }
+        
+        public function action_bookDelete() {
+            if ($this->getFromURL()) {
+                try {
+                    App::getDB()->delete("book_stock", [
+                        "id_book" => $this->book->id_book
+                    ]);
+                    Utils::addInfoMessage('Usunięto książkę o kodzie '.$this->book->id_book.' z biblioteki');
+                } catch (\PDOException $e) {
+                    Utils::addErrorMessage('Wystąpił błąd podczas usuwania rekordu');
+                    if (App::getConf()->debug){ Utils::addErrorMessage($e->getMessage()); }
+                }
+            }
+            App::getRouter()->forwardTo('bookStock');
         }
         
         public function action_bookSave() {

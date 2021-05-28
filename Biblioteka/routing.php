@@ -28,6 +28,7 @@
     
     # Book edit/add
         Utils::addRoute('bookAdd', 'BookStockEditCtrl', ['Pracownik', "Administrator"]);
+        Utils::addRoute('bookDelete', 'BookStockEditCtrl', ['Pracownik', "Administrator"]);
         Utils::addRoute('bookSave', 'BookStockEditCtrl', ['Pracownik', "Administrator"]);
 
     # Borrowed book informations
@@ -37,3 +38,6 @@
     # Return/borrow book
         Utils::addRoute('bookReturn', 'BorrowedBooksCtrl', ['Pracownik', "Administrator"]);
         Utils::addRoute('bookBorrow', 'BookBorrowCtrl', ['Pracownik', "Administrator"]);
+        
+    # Employee accounts info
+        Utils::addRoute('userList', 'UserCtrl', ["Administrator"]);

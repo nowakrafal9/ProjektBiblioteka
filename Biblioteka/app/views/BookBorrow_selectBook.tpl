@@ -33,17 +33,17 @@
                     <div class="row gtr-uniform">
                         <div class="col-6 col-12-xsmall">
                             <strong>Imię:</strong>
-                            <input type="text" name="name" id="name" value="" placeholder="Imie" disabled>
+                            <input type="text" name="name" id="name" value="" placeholder="Imie" disabled style="background: #eeeeee">
                         </div>
 
                         <div class="col-6 col-12-xsmall">
                             <strong>Nazwisko:</strong>
-                            <input type="text" name="surname" id="surnamee" value="" placeholder="Nazwisko" disabled>
+                            <input type="text" name="surname" id="surnamee" value="" placeholder="Nazwisko" disabled style="background: #eeeeee">
                         </div>
 
                         <div class="col-6 col-12-xsmall">
                             <strong>Kod czytelnika:</strong>
-                            <input type="text" name="id_reader" id="id_reader" value="" placeholder="Kod czytelnika" disabled>
+                            <input type="text" name="id_reader" id="id_reader" value="" placeholder="Kod czytelnika" disabled style="background: #eeeeee">
                         </div>
                     </div>
                 </form>

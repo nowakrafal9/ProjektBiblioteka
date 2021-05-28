@@ -1,7 +1,7 @@
 {extends file = "main_template.tpl"}
 
 {block name=content}
-    
+   
     <section style = "padding-top: 1em; padding-bottom: 0;">
 
         <form method="post" action="{url action = 'bookStock'}">          
@@ -26,11 +26,7 @@
             <input type="submit" value="Szukaj" class="primary">
             <a href="{url action = 'bookStock'}" class="button">Wyczyść filtr</a>
         </form> 
-
-        <p>
-            <a href="{url action = 'bookAdd'}" class="button primary icon solid fa-plus">Dodaj książkę</a>
-        </p>
-
+        
     </section>
 
     <section class="table-wrapper" style = "padding-top: 1em; padding-bottom: 1em">
@@ -55,9 +51,9 @@
                             <td style="width: 15%">{if {$r["borrowed"]} == "0"}Niewypożyczona{else}Wypożyczona{/if}</td>   
                             <td style="width: 15%">
                                 {if {$r["borrowed"]} == "0"}
-                                    <center><a href="{url action = 'bookBorrow'}/{$r["id_book"]}" class="button small">Wypożycz</a></center>
+                                    <center><a href="{url action = 'bookDelete'}/{$r["id_book"]}" class="button small">Usuń</a></center>
                                 {else}
-                                    <center><a href="{url action = 'borrowedReturn'}/{$r["id_book"]}" class="button small">Oddaj</a></center>
+                                    <center><span class="button small disabled">Usuń</span></center>
                                 {/if}
                             </td> 
 
@@ -71,5 +67,6 @@
         {/if}
 
     </section>
-            
+          
+    {include file = "messages.tpl"}
 {/block}
