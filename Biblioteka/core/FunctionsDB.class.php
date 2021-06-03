@@ -24,9 +24,7 @@
                 Utils::addErrorMessage('Wystąpił błąd podczas liczenia rekordów');
                 if (App::getConf()->debug){ Utils::addErrorMessage($e->getMessage()); }
             }
-            
-            App::getSmarty()->assign('numRecords', $numRecords);
-            
+                        
             return $numRecords;
         }
         

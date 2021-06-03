@@ -54,7 +54,7 @@
                 App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "employee", null, $column, $where));
 
             # Get number of employees found
-                FunctionsDB::countRecords("employee", $where); 
+                App::getSmarty()->assign('numRecords', FunctionsDB::countRecords("employee", $where)); 
             
             # Redirect to page
                 $this->generateView("Employee_employeeList.tpl");

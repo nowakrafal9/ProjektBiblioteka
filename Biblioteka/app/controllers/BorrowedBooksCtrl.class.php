@@ -60,7 +60,7 @@
                 App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "borrowed_books", null, $column, $where));
                        
             # Get number of borrowed books
-                FunctionsDB::countRecords("borrowed_books", $where); 
+                App::getSmarty()->assign('numRecords', FunctionsDB::countRecords("borrowed_books", $where)); 
                       
             # Get today date
                 App::getSmarty()->assign('dateToday', date("Y-m-d"));

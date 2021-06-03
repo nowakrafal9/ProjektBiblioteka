@@ -127,7 +127,7 @@
                             $column = ["id_borrower", "name", "surname"];
                             App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "borrower_info", null, $column, $where));
                             
-                            FunctionsDB::countRecords("borrower_info", $where);
+                            App::getSmarty()->assign('numRecords',FunctionsDB::countRecords("borrower_info", $where));
                             
                             App::getSmarty()->assign('formSent', 1);
                         }
@@ -158,7 +158,7 @@
                             $column = ["id_book", "title"];
                             App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "book_stock", null, $column, $where));
                             
-                            FunctionsDB::countRecords("book_stock", $where);
+                            App::getSmarty()->assign('numRecords',FunctionsDB::countRecords("book_stock", $where));
                             
                             App::getSmarty()->assign('formSent', 1);
                         }

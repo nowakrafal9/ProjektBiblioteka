@@ -54,7 +54,7 @@
                 App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "book_info", null, $column, $where));
                           
             # Get number of titles in library
-                FunctionsDB::countRecords("book_stock", $where);  
+                App::getSmarty()->assign('numRecords', FunctionsDB::countRecords("book_stock", $where));  
                        
            # Redirect to page
                  $this->generateView("Book_bookList.tpl");
@@ -110,7 +110,7 @@
 
                 App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "book_stock", $join, $column, $where));
             # Get number of books in library
-                FunctionsDB::countRecords("book_stock", $where); 
+                App::getSmarty()->assign('numRecords', FunctionsDB::countRecords("book_stock", $where)); 
 
             # Redirect to page
                 $this->generateView("Book_bookStock.tpl");
