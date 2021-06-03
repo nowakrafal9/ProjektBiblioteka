@@ -6,12 +6,8 @@
         
         <div class="row">                    
             <div class="col-6 col-12-small">
-                {if {$pageMode} == "readerEdit"}
-                    <h3>Edytuj czytelnika</h3> 
-                {/if}
-                {if {$pageMode} == "readerAdd"}
-                    <h3>Dodaj czytelnika</h3> 
-                {/if}
+                <h3>Edycja/dodanie czytelnika</h3>
+                 
                 <form action="{url action = "readerSave"}" method="post">
                     <div class="row gtr-uniform">
                         <div class="col-6 col-12-xsmall">
@@ -50,17 +46,13 @@
                         </div>
                         
                         <div class="col-12">
+                            <input type="submit" value="Zapisz" class="primary">
                             {if {$pageMode} == "readerEdit"}
-                                <input type="submit" value="Edytuj" class="primary">
                                 <a href="{url action = 'readerInfo'}/{$form->id_borrower}" class="button">Powrót</a>
-                            {/if}
-                            {if {$pageMode} == "readerAdd"}
-                                <input type="submit" value="Dodaj" class="primary">
+                            {else}
                                 <a href="{url action = 'readerList'}" class="button">Powrót</a>
                             {/if}
                         </div>  
-                            
-                        
                     </div>  
                     <input type="hidden" name="id_borrower" value="{$form->id_borrower}">
                 </form>
