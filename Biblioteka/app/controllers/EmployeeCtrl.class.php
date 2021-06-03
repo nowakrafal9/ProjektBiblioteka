@@ -12,6 +12,9 @@
     class EmployeeCtrl {
         private $employee;
         
+        private $page;
+        private $recordsPerPage = 5;
+        
         public function __construct() { $this->employee = new EmployeeForm(); }
         
         public function getForm() {
@@ -30,50 +33,67 @@
         
         public function action_employeeList() {
             # Get params
-                $this->getForm();
+            $this->getForm();
+            $this->page = FunctionsDB::getPage();
             
             # Set filter params
-                $filter_params = [];
-                if (isset($this->employee->login) && strlen($this->employee->login) > 0) {
-                    $filter_params['login[~]'] = $this->employee->login.'%';
-                }
-                if (isset($this->employee->name) && strlen($this->employee->name) > 0) {
-                    $filter_params['name[~]'] = $this->employee->name.'%';
-                }
-                if (isset($this->employee->surname) && strlen($this->employee->surname) > 0) {
-                    $filter_params['surname[~]'] = $this->employee->surname.'%';
-                }
-                App::getSmarty()->assign('searchForm', $this->employee);
+            $filter_params = [];
+            if (isset($this->employee->login) && strlen($this->employee->login) > 0) {
+                $filter_params['login[~]'] = $this->employee->login.'%';
+            }
+            if (isset($this->employee->name) && strlen($this->employee->name) > 0) {
+                $filter_params['name[~]'] = $this->employee->name.'%';
+            }
+            if (isset($this->employee->surname) && strlen($this->employee->surname) > 0) {
+                $filter_params['surname[~]'] = $this->employee->surname.'%';
+            }
+            App::getSmarty()->assign('searchForm', $this->employee);
             
             # Prepare $where for DB operation
-                $order = ["login"];
-                $where = FunctionsDB::prepareWhere($filter_params, $order);
-                
-            # Get employee list from DB
-                $column = ["id_employee", "login", "name", "surname", "active"];
-                App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "employee", null, $column, $where));
-
-            # Get number of employees found
-                App::getSmarty()->assign('numRecords', FunctionsDB::countRecords("employee", $where)); 
+            $order = ["login"];
+            $where = FunctionsDB::prepareWhere($filter_params, $order);
             
+            # Get number of employees found 
+            $numRecords = FunctionsDB::countRecords("employee", $where); 
+            App::getSmarty()->assign("numRecords", $numRecords);
+            
+            # Get last page
+            FunctionsDB::getLastPage($numRecords, $this->recordsPerPage);
+            
+            # Get offset of employees
+            $offset = $this->recordsPerPage*($this->page-1);
+            $where["LIMIT"] = [$offset, $this->recordsPerPage];
+            
+            # Get employee list from DB
+            $column = ["id_employee", "login", "name", "surname", "active"];
+            App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "employee", null, $column, $where));
+       
             # Redirect to page
-                $this->generateView("Employee_employeeList.tpl");
+            $this->generateView("Employee_employeeList.tpl");
         }
         
         public function action_employeeInfo() {
             # Get params
-                $this->getFromURL();
-            
-            # Get employee info
+            if($this->getFromURL()){
+                # Check if employee exists
+                if(!App::getDB()->has("employee", ["id_employee" => $this->employee->id_employee])){
+                    App::getRouter()->redirectTo("employeeList");
+                }
+                
+                # Get employee info
                 $where = ["id_employee" => $this->employee->id_employee];
                 App::getSmarty()->assign('r', FunctionsDB::getRecords("get", "employee", null, "*", $where));
 
-            # Redirect to page
+                # Redirect to page
                 $this->generateView("Employee_employeeInfo.tpl");
+            } else{
+                App::getRouter()->redirectTo("employeeList");
+            }
         }
         
         public function generateView($page) {
             App::getSmarty()->assign('user', SessionUtils::loadObject("user", true));
+            
             App::getSmarty()->display($page);
         }
     }

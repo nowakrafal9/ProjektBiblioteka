@@ -40,4 +40,27 @@
             
             return $where;
         }
+        
+        public static function getPage() {
+            $page = ParamUtils::getFromCleanURL(1);
+                
+            if(!isset($page) || $page < 1){
+                $page = 1;
+            }
+
+            App::getSmarty()->assign("page", $page);
+            return $page;
+        }
+        
+        public static function getLastPage($recordsNum, $recordsPerPage) {
+            $lastPage = 1;
+            
+            while($recordsNum > 0){
+                $recordsNum = $recordsNum - $recordsPerPage;
+                $lastPage++;
+            }
+            
+            App::getSmarty()->assign("lastPage", $lastPage);
+            return $lastPage;
+        }
     }
