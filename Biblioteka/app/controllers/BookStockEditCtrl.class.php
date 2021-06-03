@@ -33,9 +33,7 @@
             
             $exists = App::getDB()->has("book_stock", ["id_book" => $this->book->id_book]);     
             if($exists) { Utils::addErrorMessage('Książka już jest wprowadzona do bazy'); }
-            
-            if (App::getMessages()->isError()){ return false; }
-            
+                
             $exists = App::getDB()->has("book_info", ["book_code" => $this->book->book_code]);     
             if(!$exists) { Utils::addErrorMessage('Nie ma podanego tytułu w bazie'); }
             

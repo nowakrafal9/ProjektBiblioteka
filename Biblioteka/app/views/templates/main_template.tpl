@@ -22,7 +22,7 @@
 
                     <!-- Header -->
                     <header id="header">
-                        <a href="{url action = 'main'}" class="logo"><strong>Biblioteka im. Włodzimierza Lenina</strong></a>
+                        <a href="{url action = 'main'}" class="logo"><strong>Projekt Biblioteka, JPDSI/PBDAW</strong></a>
                         Zalogowany użytkownik: {$user->login}
                     </header>
                     {block name = "content"} Domyślna treść strony {/block}                 

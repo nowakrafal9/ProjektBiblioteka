@@ -46,9 +46,19 @@
             if(!preg_match('/^[0-9]{1,9}$/', $this->employee->employee_code)){ Utils::addErrorMessage("Podano niepoprawny kod pracownika"); }
             if(!preg_match('/^[0-9a-zA-Z_@]{5,45}$/', $this->employee->password)){ Utils::addErrorMessage("Podano niepoprawne hasło"); }
             
+            if (App::getMessages()->isError()){ return false; }
+            
+            $exists = App::getDB()->has("employee", ["employee_code" => $this->employee->employee_code, "id_employee[!]" => $this->employee->id_employee]);     
+            if($exists) { Utils::addErrorMessage('Podany kod pracownika jest już zajęty'); }
+            
+            $exists = App::getDB()->has("employee", ["login" => $this->employee->login, "id_employee[!]" => $this->employee->id_employee]);     
+            if($exists) { Utils::addErrorMessage('Podany login jest już zajęty'); }
+            
+            if (App::getMessages()->isError()){ return false; }
+            
             return !App::getMessages()->isError();
         }
-        
+
         public function action_employeeAdd(){
             $this->pageMode = "employeeAdd";
             $this->generateView();
@@ -82,15 +92,15 @@
                 if (empty(trim($this->employee->active))){ $this->employee->active = 0;}
                 try {
                     if ($this->employee->id_employee == '') {
-                        App::getDB()->insert("employee", [
-                            "name" => $this->employee->name,
-                            "surname" => $this->employee->surname,
-                            "employee_code" => $this->employee->employee_code,
-                            "login" => $this->employee->login,
-                            "password" => $this->employee->password,
-                            "role" => $this->employee->role,
-                            "active" => $this->employee->active
-                        ]);
+                            App::getDB()->insert("employee", [
+                                "name" => $this->employee->name,
+                                "surname" => $this->employee->surname,
+                                "employee_code" => $this->employee->employee_code,
+                                "login" => $this->employee->login,
+                                "password" => $this->employee->password,
+                                "role" => $this->employee->role,
+                                "active" => $this->employee->active
+                            ]);
                     }else{
                         App::getDB()->update("employee", [
                             "name" => $this->employee->name,

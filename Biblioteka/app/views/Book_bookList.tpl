@@ -32,7 +32,7 @@
                 </tbody>
             </table>
         {else}
-            <h4>Brak tytułów w bibliotece.</h4>
+            <h4>Nie znaleziono szukanych tytułów w bibliotece.</h4>
         {/if}
 
     </section>

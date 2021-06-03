@@ -6,12 +6,8 @@
         
         <div class="row">                    
             <div class="col-6 col-12-small">
-                {if {$pageMode} == "employeeEdit"}
-                    <h3>Edytuj pracownika</h3> 
-                {/if}
-                {if {$pageMode} == "employeeAdd"}
-                    <h3>Dodaj pracownika</h3> 
-                {/if}
+                <h3>Edycja/dodanie pracownika</h3> 
+
                 <form action="{url action = "employeeSave"}" method="post">
                     <div class="row gtr-uniform">
                         <div class="col-5 col-12-xsmall">
@@ -54,17 +50,13 @@
                         </div>
                             
                         <div class="col-12">
-                            {if {$pageMode} == "employeeEdit"}
-                                <input type="submit" value="Edytuj" class="primary">
+                            <input type="submit" value="Zapisz" class="primary">
+                            {if {$pageMode} == "employeeEdit"}   
                                 <a href="{url action = 'employeeInfo'}/{$form->id_employee}" class="button">Powrót</a>
-                            {/if}
-                            {if {$pageMode} == "employeeAdd"}
-                                <input type="submit" value="Dodaj" class="primary">
+                            {else}
                                 <a href="{url action = 'employeeList'}" class="button">Powrót</a>
                             {/if}
-                        </div>  
-                            
-                        
+                        </div>                     
                     </div>  
                     <input type="hidden" name="id_employee" value="{$form->id_employee}">
                 </form>

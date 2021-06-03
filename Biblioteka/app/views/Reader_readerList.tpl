@@ -56,7 +56,7 @@
                 </tbody>
             </table>
         {else}
-            <h4>Brak zarejestrowanych czytelników.</h4>
+            <h4>Brak znalezionych czytelników.</h4>
         {/if}
 
     </section>

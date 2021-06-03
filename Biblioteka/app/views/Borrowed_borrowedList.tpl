@@ -67,7 +67,7 @@
                 </tbody>
             </table>
         {else}
-            <h4>Brak wypożyczonych książek.</h4>
+            <h4>Nie znaleziono szukanych wypożyczonych książek.</h4>
         {/if}
 
     </section>
