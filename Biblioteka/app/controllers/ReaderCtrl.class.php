@@ -31,8 +31,7 @@
          
         public function action_readerList(){        
             # Get params
-            $this->getForm();
-            $this->page = FunctionsDB::getPage();
+            $this->getForm();     
                 
             # Set filter params
             $filter_params = [];
@@ -54,9 +53,10 @@
             # Get number of found readers 
             $numRecords = FunctionsDB::countRecords("borrower_info", $where); 
             App::getSmarty()->assign("numRecords", $numRecords);
-                
-            # Get last page
-            FunctionsDB::getLastPage($numRecords, $this->recordsPerPage);
+            
+            
+            # Get page
+            $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
                    
             # Get offset of readers
             $offset = $this->recordsPerPage*($this->page-1);

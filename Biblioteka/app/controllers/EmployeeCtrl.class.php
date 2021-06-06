@@ -34,7 +34,6 @@
         public function action_employeeList() {
             # Get params
             $this->getForm();
-            $this->page = FunctionsDB::getPage();
             
             # Set filter params
             $filter_params = [];
@@ -57,8 +56,8 @@
             $numRecords = FunctionsDB::countRecords("employee", $where); 
             App::getSmarty()->assign("numRecords", $numRecords);
             
-            # Get last page
-            FunctionsDB::getLastPage($numRecords, $this->recordsPerPage);
+            # Get page
+            $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
             
             # Get offset of employees
             $offset = $this->recordsPerPage*($this->page-1);

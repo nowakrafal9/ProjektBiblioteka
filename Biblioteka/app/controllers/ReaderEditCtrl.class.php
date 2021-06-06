@@ -47,15 +47,14 @@
             if(!preg_match('/^[a-zA-ząćęłńóśźżĄĘŁŃÓŚŹŻ0-9\x20]{3,100}$/', $this->reader->address)){ Utils::addErrorMessage("Podano niepoprawny adres"); }
             if(!preg_match('/^\d{2}-\d{3}$/', $this->reader->postalCode)){ Utils::addErrorMessage("Podano niepoprawny kod pocztowy"); }
             if(!preg_match('/^\d{9,11}$/', $this->reader->phoneNumber)){ Utils::addErrorMessage("Podano niepoprawny nr telefonu"); }
-//            if(!empty(trim($this->reader->email))){ 
-//                if(!preg_match('/^\w{1,50}$/', $this->reader->email) || 
-//                   !filter_var($this->reader->email, FILTER_VALIDATE_EMAIL)){ 
-//                    Utils::addErrorMessage("Podano niepoprawny email");    
-//                }     
-//            }
+            if(!empty(trim($this->reader->email))){
+                if(!filter_var($this->reader->email, FILTER_VALIDATE_EMAIL)){
+                    Utils::addErrorMessage("Podano niepoprawny email"); 
+                }
+            }
             
             if (App::getMessages()->isError()){ return false; }
-             
+            
             return !App::getMessages()->isError();
         }
         

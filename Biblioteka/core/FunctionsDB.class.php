@@ -41,16 +41,21 @@
             return $where;
         }
         
-        public static function getPage() {
+        public static function getPage($recordsNum, $recordsPerPage) {
             $page = ParamUtils::getFromCleanURL(1);
-                
-            if(!isset($page) || $page < 1){
-                $page = 1;
+            
+            $lastPage = self::getLastPage($recordsNum, $recordsPerPage);
+            
+            if(!isset($page) || $page < 1){ 
+                $page = 1;      
+            }
+            if($page > $lastPage-1){ 
+                $page = $lastPage-1; 
             }
 
             App::getSmarty()->assign("page", $page);
             return $page;
-        }
+        } 
         
         public static function getLastPage($recordsNum, $recordsPerPage) {
             $lastPage = 1;

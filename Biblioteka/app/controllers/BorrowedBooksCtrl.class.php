@@ -37,7 +37,6 @@
         public function action_borrowedList(){ 
             # Get params
             $this->getForm();
-            $this->page = FunctionsDB::getPage();
             
             # Set filter params
             $filter_params = [];
@@ -61,8 +60,8 @@
             $numRecords = FunctionsDB::countRecords("borrowed_books", $where); 
             App::getSmarty()->assign("numRecords", $numRecords);
             
-             # Get last page
-            FunctionsDB::getLastPage($numRecords, $this->recordsPerPage);
+            # Get page
+            $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
             
             # Get offset of books
             $offset = $this->recordsPerPage*($this->page-1);

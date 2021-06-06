@@ -38,7 +38,6 @@
         public function action_bookList(){   
             # Get params
             $this -> getForm("bookList");
-            $this->page = FunctionsDB::getPage();
             
             # Set filter params
             $filter_params = [];
@@ -55,8 +54,8 @@
             $numRecords = FunctionsDB::countRecords("book_info", $where); 
             App::getSmarty()->assign("numRecords", $numRecords);
             
-            # Get last page
-            FunctionsDB::getLastPage($numRecords, $this->recordsPerPage);
+            # Get page
+            $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
             
             # Get offset of books
             $offset = $this->recordsPerPage*($this->page-1);
@@ -102,7 +101,6 @@
         public function action_bookStock(){ 
             # Get params
             $this -> getForm("bookStock");
-            $this->page = FunctionsDB::getPage();
             
             # Set filter params    
             $filter_params = [];
@@ -125,8 +123,8 @@
             $numRecords = FunctionsDB::countRecords("book_stock", $where); 
             App::getSmarty()->assign("numRecords", $numRecords);
             
-            # Get last page
-            FunctionsDB::getLastPage($numRecords, $this->recordsPerPage);
+            # Get page
+            $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
             
             # Get offset of books
             $offset = $this->recordsPerPage*($this->page-1);
