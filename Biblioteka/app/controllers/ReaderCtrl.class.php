@@ -13,7 +13,7 @@
         private $reader;
         
         private $page;
-        private $recordsPerPage = 5;
+        private $recordsPerPage = 10;
         
         public function __construct() { $this->reader = new ReaderListForm(); }
         
@@ -54,18 +54,19 @@
             $numRecords = FunctionsDB::countRecords("borrower_info", $where); 
             App::getSmarty()->assign("numRecords", $numRecords);
             
+            if($numRecords > 0){
+                # Get page
+                $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
+
+                # Get offset of readers
+                $offset = $this->recordsPerPage*($this->page-1);
+                $where["LIMIT"] = [$offset, $this->recordsPerPage];
+
+                # Get readers list from DB
+                $column = ["id_borrower", "name", "surname"];
+                App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "borrower_info", null, $column, $where));
+            }    
             
-            # Get page
-            $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
-                   
-            # Get offset of readers
-            $offset = $this->recordsPerPage*($this->page-1);
-            $where["LIMIT"] = [$offset, $this->recordsPerPage];
-                      
-            # Get readers list from DB
-            $column = ["id_borrower", "name", "surname"];
-            App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "borrower_info", null, $column, $where));
-                       
             # Redirect to page
             $this->generateView("Reader_readerList.tpl");
         }

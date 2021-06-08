@@ -13,7 +13,7 @@
         private $employee;
         
         private $page;
-        private $recordsPerPage = 5;
+        private $recordsPerPage = 10;
         
         public function __construct() { $this->employee = new EmployeeForm(); }
         
@@ -56,17 +56,18 @@
             $numRecords = FunctionsDB::countRecords("employee", $where); 
             App::getSmarty()->assign("numRecords", $numRecords);
             
-            # Get page
-            $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
-            
-            # Get offset of employees
-            $offset = $this->recordsPerPage*($this->page-1);
-            $where["LIMIT"] = [$offset, $this->recordsPerPage];
-            
-            # Get employee list from DB
-            $column = ["id_employee", "login", "name", "surname", "active"];
-            App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "employee", null, $column, $where));
-       
+            if($numRecords > 0){
+                # Get page
+                $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
+
+                # Get offset of employees
+                $offset = $this->recordsPerPage*($this->page-1);
+                $where["LIMIT"] = [$offset, $this->recordsPerPage];
+
+                # Get employee list from DB
+                $column = ["id_employee", "login", "name", "surname", "active"];
+                App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "employee", null, $column, $where));
+            }
             # Redirect to page
             $this->generateView("Employee_employeeList.tpl");
         }

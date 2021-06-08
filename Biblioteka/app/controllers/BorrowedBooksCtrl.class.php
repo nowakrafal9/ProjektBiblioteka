@@ -15,7 +15,7 @@
         private $reader;
         
         private $page;
-        private $recordsPerPage = 5;
+        private $recordsPerPage = 10;
         
         public function __construct() {
             $this->book = new BorrowedBooksForm(); 
@@ -60,20 +60,22 @@
             $numRecords = FunctionsDB::countRecords("borrowed_books", $where); 
             App::getSmarty()->assign("numRecords", $numRecords);
             
-            # Get page
-            $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
+            if($numRecords > 0){
+                # Get page
+                $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
+
+                # Get offset of books
+                $offset = $this->recordsPerPage*($this->page-1);
+                $where["LIMIT"] = [$offset, $this->recordsPerPage];
+
+                # Get borrowed books list
+                $column = ["id_book", "id_borrower", "borrow_date", "return_date"];
+                App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "borrowed_books", null, $column, $where));
+
+                # Get today date
+                App::getSmarty()->assign('dateToday', date("Y-m-d"));
+            }
             
-            # Get offset of books
-            $offset = $this->recordsPerPage*($this->page-1);
-            $where["LIMIT"] = [$offset, $this->recordsPerPage];
-            
-            # Get borrowed books list
-            $column = ["id_book", "id_borrower", "borrow_date", "return_date"];
-            App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "borrowed_books", null, $column, $where));
-                       
-            # Get today date
-            App::getSmarty()->assign('dateToday', date("Y-m-d"));
-                
             # Redirect to page
             $this->generateView("Borrowed_borrowedList.tpl");
         }

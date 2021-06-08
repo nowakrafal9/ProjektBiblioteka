@@ -13,7 +13,7 @@
         private $book;
         
         private $page;
-        private $recordsPerPage = 5;
+        private $recordsPerPage = 10;
         
         public function __construct() { $this->book = new BookInfoForm(); }
         
@@ -54,17 +54,19 @@
             $numRecords = FunctionsDB::countRecords("book_info", $where); 
             App::getSmarty()->assign("numRecords", $numRecords);
             
-            # Get page
-            $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
+            if($numRecords > 0){
+                # Get page
+                $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
+
+                # Get offset of books
+                $offset = $this->recordsPerPage*($this->page-1);
+                $where["LIMIT"] = [$offset, $this->recordsPerPage];
+
+                # Get book titles list from DB
+                $column = ["id_book", "title"];
+                App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "book_info", null, $column, $where));
+            }
             
-            # Get offset of books
-            $offset = $this->recordsPerPage*($this->page-1);
-            $where["LIMIT"] = [$offset, $this->recordsPerPage];
-            
-            # Get book titles list from DB
-            $column = ["id_book", "title"];
-            App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "book_info", null, $column, $where));
-                                         
            # Redirect to page
             $this->generateView("Book_bookList.tpl");
         }
@@ -123,18 +125,19 @@
             $numRecords = FunctionsDB::countRecords("book_stock", $where); 
             App::getSmarty()->assign("numRecords", $numRecords);
             
-            # Get page
-            $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
-            
-            # Get offset of books
-            $offset = $this->recordsPerPage*($this->page-1);
-            $where["LIMIT"] = [$offset, $this->recordsPerPage];
-            
-            # Get books in library from DB
-            $join =["[><]book_info" => ["book_code" => "book_code"]];
-            $column = ["book_stock.id_book", "book_info.title", "book_stock.borrowed"];
+            if($numRecords > 0){
+                # Get page
+                $this->page = FunctionsDB::getPage($numRecords, $this->recordsPerPage);
 
-            App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "book_stock", $join, $column, $where));
+                # Get offset of books
+                $offset = $this->recordsPerPage*($this->page-1);
+                $where["LIMIT"] = [$offset, $this->recordsPerPage];
+
+                # Get books in library from DB
+                $join =["[><]book_info" => ["book_code" => "book_code"]];
+                $column = ["book_stock.id_book", "book_info.title", "book_stock.borrowed"];
+                App::getSmarty()->assign('records', FunctionsDB::getRecords("select", "book_stock", $join, $column, $where));
+            }
             
             # Redirect to page
             $this->generateView("Book_bookStock.tpl");
